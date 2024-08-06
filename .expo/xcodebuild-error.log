@@ -1,0 +1,9 @@
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:tvOS Simulator, id:09EB9BCE-55F2-4B2F-8AF9-9FFB55E0C66C, OS:16.4, name:Apple TV }
+{ platform:tvOS Simulator, id:09EB9BCE-55F2-4B2F-8AF9-9FFB55E0C66C, OS:16.4, name:Apple TV }
+** BUILD FAILED **
+
+
+The following build commands failed:
+	PhaseScriptExecution [CP-User]\ [Hermes]\ Replace\ Hermes\ for\ the\ right\ configuration,\ if\ needed /Users/laquigi/Library/Developer/Xcode/DerivedData/GioLaqTV-gejdgkskccracecitawpodlljbxh/Build/Intermediates.noindex/Pods.build/Debug-appletvsimulator/hermes-engine.build/Script-46EB2E0001B0C0.sh (in target 'hermes-engine' from project 'Pods')
+(1 failure)

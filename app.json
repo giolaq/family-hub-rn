@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "FamilyHub",
+    "slug": "FamilyHub",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.giolaq.familyhub"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.giolaq.familyhub"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "experiments": {
+      "baseUrl": "./"
+    },
+    "plugins": [
+      "@bam.tech/react-native-keyevent-expo-config-plugin",
+      [
+        "@react-native-tvos/config-tv",
+        {
+          "showVerboseWarnings": true
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Montserrat-Bold.ttf",
+            "./assets/fonts/Montserrat-Regular.ttf",
+            "./assets/fonts/Montserrat-SemiBold.ttf",
+            "./assets/fonts/Montserrat-Medium.ttf"
+          ]
+        }
+      ],
+      [ "expo-av"]
+    ]
+  }
+}

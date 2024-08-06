@@ -1,0 +1,24 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/laquigi/Projects/ConfTV/logs/.19cd645717c6beed6a91af22d8cf208d60b3a446-audit.json",
+    "files": [
+        {
+            "date": 1715859670917,
+            "name": "/Users/laquigi/Projects/ConfTV/logs/error-2024-05-16.log",
+            "hash": "299c7a0c043bcfb7284a050db45d7e4b"
+        },
+        {
+            "date": 1716288928150,
+            "name": "/Users/laquigi/Projects/ConfTV/logs/error-2024-05-21.log",
+            "hash": "9bb3fc6e9b22b05cc8c46e2a6b1d9a6f"
+        },
+        {
+            "date": 1716378301917,
+            "name": "/Users/laquigi/Projects/ConfTV/logs/error-2024-05-22.log",
+            "hash": "1c54fe6818bf2c06386b1815b8d9a678"
+        }
+    ]
+}

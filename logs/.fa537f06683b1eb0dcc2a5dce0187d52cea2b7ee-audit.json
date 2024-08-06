@@ -1,0 +1,24 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/laquigi/Projects/ConfTV/logs/.fa537f06683b1eb0dcc2a5dce0187d52cea2b7ee-audit.json",
+    "files": [
+        {
+            "date": 1715859670918,
+            "name": "/Users/laquigi/Projects/ConfTV/logs/keplerCliNative-2024-05-16.log",
+            "hash": "62e0c5f6f9c2f8629e069b954ba3dd80"
+        },
+        {
+            "date": 1716288928152,
+            "name": "/Users/laquigi/Projects/ConfTV/logs/keplerCliNative-2024-05-21.log",
+            "hash": "5d991d979fb65caf32bb5d4439097c2e"
+        },
+        {
+            "date": 1716378301921,
+            "name": "/Users/laquigi/Projects/ConfTV/logs/keplerCliNative-2024-05-22.log",
+            "hash": "4f36f31346b7369939d624e4618bc991"
+        }
+    ]
+}
