@@ -16,7 +16,9 @@ interface MessageItemProps {
 const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   return (
     <MessageContainer>
-      <SenderAvatar>{message.sender[0]}</SenderAvatar>
+      <SenderAvatar>
+        <Typography>{message.sender[0]}</Typography>
+      </SenderAvatar>
       <MessageContent>
         <MessageHeader>
           <SenderName>{message.sender}</SenderName>
