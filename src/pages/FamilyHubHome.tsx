@@ -12,6 +12,7 @@ import { Page } from '../components/Page';
 import EventItem from '../components/EventItem';
 import TaskItem from '../components/TaskItem';
 import MessageItem from '../components/MessageItem';
+import Popup from '../components/Popup';
 
 
 const FamilyHubHome = () => {
@@ -24,15 +25,35 @@ const FamilyHubHome = () => {
     { name: "Clean the kitchen", assignedTo: "Sarah", completed: false },
     { name: "Walk the dog", assignedTo: "Mike", completed: true },
   ]);
-  
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+    console.log("Popup should be showing");
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handleSubmit = (data: { task: string; assignedTo: string }) => {
+    console.log('Submitted data:', data);
+    const newTask : Task = {
+      name: data.task,
+      assignedTo: data.assignedTo,
+      completed: false
+    }
+    setTasks([...tasks, newTask]);
+  };
+
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
   const toggleTaskComplete = (taskName: string) => {
-    setTasks(prevTasks => 
-      prevTasks.map(task => 
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
         task.name === taskName ? { ...task, completed: !task.completed } : task
       )
     );
@@ -53,21 +74,23 @@ const FamilyHubHome = () => {
 
   return (
     <Page>
-    <Container>
-      <HeaderBar>
-        <Logo source={require('../../assets/icon.png')} />
-        <Typography variant="title">{currentTime.toLocaleTimeString()}</Typography>
-        <WeatherWidget>
-          <Typography variant="body">{weather.temp}</Typography>
-          <Typography variant="body">{weather.condition}</Typography>
-        </WeatherWidget>
-      </HeaderBar>
+      <Container>
+        <HeaderBar>
+          <Logo source={require('../../assets/icon.png')} />
+          <Typography variant="title">{currentTime.toLocaleTimeString()}</Typography>
+          <WeatherWidget>
+            <Typography variant="body">{weather.temp}</Typography>
+            <Typography variant="body">{weather.condition}</Typography>
+          </WeatherWidget>
+        </HeaderBar>
 
-      <FamilyMembersCarousel>
-        {/* Add family member avatars here */}
-      </FamilyMembersCarousel>
+        <FamilyMembersCarousel>
+          {/* Add family member avatars here */}
+        </FamilyMembersCarousel>
 
-      <MainContentArea>
+        <Popup isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleSubmit} />
+
+        <MainContentArea>
           <WidgetContainer>
             <CalendarWidget>
               <WidgetTitle>Family Calendar</WidgetTitle>
@@ -104,13 +127,13 @@ const FamilyHubHome = () => {
             </MessageCenterWidget>
           </WidgetContainer>
         </MainContentArea>
-      <QuickActionsBar>
-        <ActionButton icon="CalendarPlus" label="Add Event" />
-        <ActionButton icon="ClipboardList" label="New Task" />
-        <ActionButton icon="MessageSquare" label="Family Chat" />
-        <ActionButton icon="Settings" label="Settings" />
-      </QuickActionsBar>
-    </Container>
+        <QuickActionsBar>
+          <ActionButton icon="CalendarPlus" label="Add Event" onClick={() => { }} />
+          <ActionButton icon="ClipboardList" label="New Task" onClick={handleOpenPopup} />
+          <ActionButton icon="MessageSquare" label="Family Chat" onClick={() => { }} />
+          <ActionButton icon="Settings" label="Settings" onClick={() => { }} />
+        </QuickActionsBar>
+      </Container>
     </Page>
   );
 };
@@ -218,11 +241,13 @@ const QuickActionsBar = styled(View)({
   paddingVertical: 10, // Add vertical padding to the parent container
 });
 
-const ActionButton = ({ icon, label }) => (
-  <Box alignItems="center" justifyContent='center' flex={1}>
-    <Icon icon={icon} size={64} color="#4A90E2" />
-    <Typography variant="body" style={{color:"#4A90E2"}}>{label}</Typography>
-  </Box>
+const ActionButton = ({ icon, label, onClick }) => (
+  <button onClick={onClick}>
+    <Box alignItems="center" justifyContent='center' flex={1}>
+      <Icon icon={icon} size={64} color="#4A90E2" />
+      <Typography variant="body" style={{ color: "#4A90E2" }}>{label}</Typography>
+    </Box>
+  </button>
 );
 
 const styles = StyleSheet.create({
