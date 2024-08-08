@@ -185,23 +185,23 @@ const WidgetContent = styled(ScrollView)({
   flex: 1,
 });
 
-const ProgressBar = styled(View)<{ progress: number }>(({ progress }) => ({
-  height: 10,
-  backgroundColor: '#E0E0E0',
-  borderRadius: 5,
-  marginTop: 10,
-  overflow: 'hidden',
-  position: 'relative',
-  '::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    height: '100%',
-    width: `${progress * 100}%`,
-    backgroundColor: '#50E3C2',
-  },
-}));
+const ProgressBar = ({ progress }: { progress: number }) => {
+  return (
+    <View style={styles.container}>
+      <LinearGradient
+        colors={['#50E3C2', '#50E3C2']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0 }}
+        style={
+          {
+            height: '100%',
+            width: `${progress * 100}%`,
+          }
+        }
+      />
+    </View>
+  );
+};
 
 const HeaderBar = styled(View)({
   flexDirection: 'row',
@@ -254,6 +254,13 @@ const styles = StyleSheet.create({
   focusedElement: {
     borderColor: '#FFD700',
     borderWidth: 3,
+  },
+  container: {
+    height: 10,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 5,
+    marginTop: 10,
+    overflow: 'hidden',
   },
 });
 
