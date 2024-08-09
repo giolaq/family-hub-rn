@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Image, StyleSheet } from 'react-native';
+import { View, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
@@ -134,11 +134,12 @@ const FamilyHubHome = () => {
           </SpatialNavigationView>
         </MainContentArea>
         <QuickActionsBar>
+        <QuickActionsContent>
         <SpatialNavigationView direction='horizontal' >
           <SpatialNavigationFocusableView>
           <ActionButton icon="CalendarPlus" label="Add Event" onClick={() => { }} />
           </SpatialNavigationFocusableView>
-          <SpatialNavigationFocusableView>
+          <SpatialNavigationFocusableView onSelect={handleOpenPopup}>
           <ActionButton icon="ClipboardList" label="New Task" onClick={handleOpenPopup} />
           </SpatialNavigationFocusableView>
           <SpatialNavigationFocusableView>
@@ -148,6 +149,7 @@ const FamilyHubHome = () => {
           <ActionButton icon="Settings" label="Settings" onClick={() => { }} />
           </SpatialNavigationFocusableView>
         </SpatialNavigationView>
+        </QuickActionsContent>
         </QuickActionsBar>
       </Container>
     </Page>
@@ -244,25 +246,53 @@ const FamilyMembersCarousel = styled(ScrollView)({
   marginTop: scaledPixels(20),
 });
 
-
 const QuickActionsBar = styled(View)({
-  flexDirection: 'row',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  height: scaledPixels(100),
+  height: scaledPixels(160),
   backgroundColor: '#FFFFFF',
   borderTopLeftRadius: scaledPixels(10),
   borderTopRightRadius: scaledPixels(10),
   marginTop: scaledPixels(20),
-  paddingVertical: scaledPixels(10), // Add vertical padding to the parent container
+  justifyContent: 'center', // Center content vertically
+  alignItems: 'center', // Center content horizontally
 });
 
-const ActionButton = ({ icon, label, onClick }) => (
-    <Box alignItems="center" justifyContent='center' flex={1}>
-      <Icon icon={icon} size={64} color="#4A90E2" />
-      <Typography variant="body" style={{ color: "#4A90E2" }}>{label}</Typography>
-    </Box>
+const QuickActionsContent = styled(View)({
+  flexDirection: 'row',
+  justifyContent: 'center', // Center buttons horizontally
+  alignItems: 'center', // Center buttons vertically
+  width: '100%', // Take full width of parent
+  paddingTop: scaledPixels(30),
+  paddingBottom: scaledPixels(30),
+  paddingHorizontal: scaledPixels(60), // Add some horizontal padding
+});
+
+interface ActionButtonProps {
+  icon: string;
+  label: string;
+  onClick: () => void;
+}
+
+const ActionButton: React.FC<ActionButtonProps> = ({ icon, label, onClick }) => (
+  <ActionButtonContainer onPress={onClick}>
+    <Icon icon={icon} size={scaledPixels(48)} color="#4A90E2" />
+    <ActionButtonLabel>{label}</ActionButtonLabel>
+  </ActionButtonContainer>
 );
+
+const ActionButtonContainer = styled(TouchableOpacity)({
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: scaledPixels(10),
+  width: scaledPixels(100), // Set a fixed width for each button
+  marginHorizontal: scaledPixels(10), // Add horizontal margin for spacing
+});
+
+const ActionButtonLabel = styled(Typography)({
+  color: "#4A90E2",
+  marginTop: scaledPixels(8),
+  textAlign: 'center',
+  fontSize: scaledPixels(14),
+});
 
 const styles = StyleSheet.create({
   focusedElement: {
@@ -270,7 +300,7 @@ const styles = StyleSheet.create({
     borderWidth: scaledPixels(3),
   },
   container: {
-    height: 10,
+    height: scaledPixels(10),
     backgroundColor: '#E0E0E0',
     borderRadius: scaledPixels(5),
     marginTop: scaledPixels(10),
