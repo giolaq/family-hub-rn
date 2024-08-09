@@ -19,6 +19,8 @@ class RemoteControlManager implements RemoteControlManagerInterface {
       Backspace: SupportedKeys.Back,
     }[event.code];
 
+    console.log('Key ' + event.code);
+
     //For LG WebOs Magic Remote
     if (event.key === 'GoBack') {
       this.eventEmitter.emit('keyDown', SupportedKeys.Back);
@@ -33,11 +35,13 @@ class RemoteControlManager implements RemoteControlManagerInterface {
 
   addKeydownListener = (listener: (event: SupportedKeys) => void) => {
     this.eventEmitter.on('keyDown', listener);
+    console.log('Key listener added');
     return listener;
   };
 
   removeKeydownListener = (listener: (event: SupportedKeys) => void) => {
     this.eventEmitter.off('keyDown', listener);
+    console.log('Key listener removed');
   };
 
   emitKeyDown = (key: SupportedKeys) => {

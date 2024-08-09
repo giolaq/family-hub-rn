@@ -1,7 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
 import { NavigationContainer } from '@react-navigation/native';
 import { useWindowDimensions } from 'react-native';
-import { GoBackConfiguration } from './src/components/GoBackConfiguration';
 import { theme } from './src/design-system/theme/theme';
 import { Menu } from './src/components/Menu/Menu';
 import { MenuProvider } from './src/components/Menu/MenuContext';
@@ -15,6 +14,8 @@ import { useTVPanEvent } from './src/components/PanEvent/useTVPanEvent';
 
 import { SpatialNavigationDeviceTypeProvider } from 'react-tv-space-navigation';
 import FamilyHubHome from './src/pages/FamilyHubHome';
+
+import './src/components/configureRemoteControl';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -59,8 +60,8 @@ const TabNavigator = () => {
         }}
       >
         <Tab.Screen name="Home" component={FamilyHubHome} />
-        <Tab.Screen name="ProgramGridPage" component={Home} />
-        <Tab.Screen name="NonVirtualizedGridPage" component={Home} />
+        <Tab.Screen name="ProgramGridPage" component={FamilyHubHome} />
+        <Tab.Screen name="NonVirtualizedGridPage" component={FamilyHubHome} />
       </Tab.Navigator>
     </MenuProvider>
   );
@@ -79,7 +80,6 @@ function App(): JSX.Element {
     <NavigationContainer>
       <ThemeProvider theme={theme}>
         <SpatialNavigationDeviceTypeProvider>
-          <GoBackConfiguration />
 
           <Container width={width} height={height}>
             <Stack.Navigator

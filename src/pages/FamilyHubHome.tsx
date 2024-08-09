@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Image, StyleSheet } from 'react-native';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { DefaultFocus, SpatialNavigationFocusableView } from 'react-tv-space-navigation';
+import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
 import { Typography } from '../design-system/components/Typography';
 import { Box } from '../design-system/components/Box';
 import { Spacer } from '../design-system/components/Spacer';
@@ -13,6 +13,7 @@ import EventItem from '../components/EventItem';
 import TaskItem from '../components/TaskItem';
 import MessageItem from '../components/MessageItem';
 import Popup from '../components/Popup';
+import { scaledPixels } from '../hooks/useScale';
 
 
 const FamilyHubHome = () => {
@@ -88,9 +89,11 @@ const FamilyHubHome = () => {
           {/* Add family member avatars here */}
         </FamilyMembersCarousel>
 
+
         <Popup isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleSubmit} />
 
         <MainContentArea>
+        <SpatialNavigationView direction='horizontal' >
           <WidgetContainer>
             <CalendarWidget>
               <WidgetTitle>Family Calendar</WidgetTitle>
@@ -99,7 +102,9 @@ const FamilyHubHome = () => {
                   <EventItem key={index} event={event} />
                 ))}
               </WidgetContent>
-              <Button label="View All" onSelect={() => {}} />
+              <DefaultFocus>
+                <Button label="View All" onSelect={() => {}} />
+              </DefaultFocus>
             </CalendarWidget>
           </WidgetContainer>
 
@@ -126,12 +131,23 @@ const FamilyHubHome = () => {
               <Button label="New Message" onSelect={() => {}} />
             </MessageCenterWidget>
           </WidgetContainer>
+          </SpatialNavigationView>
         </MainContentArea>
         <QuickActionsBar>
+        <SpatialNavigationView direction='horizontal' >
+          <SpatialNavigationFocusableView>
           <ActionButton icon="CalendarPlus" label="Add Event" onClick={() => { }} />
+          </SpatialNavigationFocusableView>
+          <SpatialNavigationFocusableView>
           <ActionButton icon="ClipboardList" label="New Task" onClick={handleOpenPopup} />
+          </SpatialNavigationFocusableView>
+          <SpatialNavigationFocusableView>
           <ActionButton icon="MessageSquare" label="Family Chat" onClick={() => { }} />
+          </SpatialNavigationFocusableView>
+          <SpatialNavigationFocusableView>
           <ActionButton icon="Settings" label="Settings" onClick={() => { }} />
+          </SpatialNavigationFocusableView>
+        </SpatialNavigationView>
         </QuickActionsBar>
       </Container>
     </Page>
@@ -142,7 +158,7 @@ const FamilyHubHome = () => {
 const Container = styled(View)({
   flex: 1,
   backgroundColor: '#F7F9FC',
-  padding: 60,
+  padding: scaledPixels(60),
 });
 
 const MainContentArea = styled(View)({
@@ -150,19 +166,19 @@ const MainContentArea = styled(View)({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'stretch',
-  marginTop: 20,
-  marginBottom: 20,
+  marginTop: scaledPixels(20),
+  marginBottom: scaledPixels(20),
 });
 
 const WidgetContainer = styled(View)({
-  marginHorizontal: 10,
-  maxWidth: 400, // Adjust this value as needed
+  marginHorizontal: scaledPixels(10),
+  maxWidth: scaledPixels(400), // Adjust this value as needed
 });
 
 const WidgetBase = styled(View)({
   backgroundColor: '#FFFFFF',
-  borderRadius: 10,
-  padding: 20,
+  borderRadius: scaledPixels(10),
+  padding: scaledPixels(20),
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
@@ -175,9 +191,9 @@ const TaskBoardWidget = styled(WidgetBase)({});
 const MessageCenterWidget = styled(WidgetBase)({});
 
 const WidgetTitle = styled(Typography)({
-  fontSize: 24,
+  fontSize: scaledPixels(24),
   fontWeight: '600',
-  marginBottom: 10,
+  marginBottom: scaledPixels(10),
   color: "#4A90E2",
 });
 
@@ -207,15 +223,15 @@ const HeaderBar = styled(View)({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  height: 80,
+  height: scaledPixels(80),
   width: '100%',
   backgroundColor: 'rgba(74, 144, 226, 0.9)',
-  paddingHorizontal: 20,
+  paddingHorizontal: scaledPixels(20),
 });
 
 const Logo = styled(Image)({
-  width: 150,
-  height: 50,
+  width: scaledPixels(150),
+  height: scaledPixels(50),
   resizeMode: 'contain',
 });
 
@@ -224,8 +240,8 @@ const WeatherWidget = styled(View)({
 });
 
 const FamilyMembersCarousel = styled(ScrollView)({
-  height: 120,
-  marginTop: 20,
+  height: scaledPixels(120),
+  marginTop: scaledPixels(20),
 });
 
 
@@ -233,33 +249,31 @@ const QuickActionsBar = styled(View)({
   flexDirection: 'row',
   justifyContent: 'space-around',
   alignItems: 'center',
-  height: 100,
+  height: scaledPixels(100),
   backgroundColor: '#FFFFFF',
-  borderTopLeftRadius: 10,
-  borderTopRightRadius: 10,
-  marginTop: 20,
-  paddingVertical: 10, // Add vertical padding to the parent container
+  borderTopLeftRadius: scaledPixels(10),
+  borderTopRightRadius: scaledPixels(10),
+  marginTop: scaledPixels(20),
+  paddingVertical: scaledPixels(10), // Add vertical padding to the parent container
 });
 
 const ActionButton = ({ icon, label, onClick }) => (
-  <button onClick={onClick}>
     <Box alignItems="center" justifyContent='center' flex={1}>
       <Icon icon={icon} size={64} color="#4A90E2" />
       <Typography variant="body" style={{ color: "#4A90E2" }}>{label}</Typography>
     </Box>
-  </button>
 );
 
 const styles = StyleSheet.create({
   focusedElement: {
     borderColor: '#FFD700',
-    borderWidth: 3,
+    borderWidth: scaledPixels(3),
   },
   container: {
     height: 10,
     backgroundColor: '#E0E0E0',
-    borderRadius: 5,
-    marginTop: 10,
+    borderRadius: scaledPixels(5),
+    marginTop: scaledPixels(10),
     overflow: 'hidden',
   },
 });

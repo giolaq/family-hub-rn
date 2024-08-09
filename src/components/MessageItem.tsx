@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ViewProps } from 'react-native';
 import styled from '@emotion/native';
 import { Typography } from '../design-system/components/Typography';
+import { scaledPixels } from '../hooks/useScale';
 
 interface Message {
   sender: string;
@@ -33,25 +34,25 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
 const MessageContainer = styled(View)({
   flexDirection: 'row',
   alignItems: 'center',
-  marginBottom: 10,
+  marginBottom: scaledPixels(10),
   backgroundColor: '#FFFFFF',
-  borderRadius: 8,
-  padding: 10,
+  borderRadius: scaledPixels(8),
+  padding: scaledPixels(10),
   elevation: 2,
   shadowColor: '#000',
   shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.1,
-  shadowRadius: 4,
+  shadowRadius: scaledPixels(4),
 });
 
 const SenderAvatar = styled(View)({
-  width: 40,
-  height: 40,
-  borderRadius: 20,
+  width: scaledPixels(40),
+  height: scaledPixels(40),
+  borderRadius: scaledPixels(20),
   backgroundColor: '#4A90E2',
   justifyContent: 'center',
   alignItems: 'center',
-  marginRight: 10,
+  marginRight: scaledPixels(10),
 });
 
 const MessageContent = styled(View)({
@@ -62,22 +63,22 @@ const MessageHeader = styled(View)({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginBottom: 5,
+  marginBottom: scaledPixels(5),
 });
 
 const SenderName = styled(Typography)({
-  fontSize: 16,
+  fontSize: scaledPixels(16),
   fontWeight: '600',
   color: '#333333',
 });
 
 const MessageTime = styled(Typography)({
-  fontSize: 12,
+  fontSize: scaledPixels(12),
   color: '#757575',
 });
 
 const MessagePreview = styled(Typography)({
-  fontSize: 14,
+  fontSize: scaledPixels(14),
   color: '#757575',
   numberOfLines: 1,
   ellipsizeMode: 'tail',

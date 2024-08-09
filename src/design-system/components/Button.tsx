@@ -35,12 +35,12 @@ export const Button = ({ label, onSelect }: ButtonProps) => {
 
 const Container = styled(Animated.View)<{ isFocused: boolean }>(({ isFocused, theme }) => ({
   alignSelf: 'baseline',
-  backgroundColor: isFocused ? 'white' : 'black',
+  backgroundColor: isFocused ? 'blue' : 'white',
   padding: theme.spacings.$4,
   borderRadius: scaledPixels(12),
   cursor: 'pointer',
 }));
 
 const ColoredTypography = styled(Typography)<{ isFocused: boolean }>(({ isFocused }) => ({
-  color: isFocused ? 'black' : 'white',
+  color: isFocused ? 'white' : 'black',
 }));

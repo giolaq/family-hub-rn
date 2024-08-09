@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ViewProps } from 'react-native';
 import styled from '@emotion/native';
 import { Typography } from '../design-system/components/Typography';
+import { scaledPixels } from '../hooks/useScale';
 
 interface Event {
   title: string;
@@ -34,32 +35,32 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
 
 const EventContainer = styled(View)({
   flexDirection: 'row',
-  marginBottom: 10,
+  marginBottom: scaledPixels(10),
   backgroundColor: '#FFFFFF',
-  borderRadius: 8,
+  borderRadius: scaledPixels(8),
   overflow: 'hidden',
   elevation: 2,
   shadowColor: '#000',
   shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.1,
-  shadowRadius: 4,
+  shadowRadius: scaledPixels(4),
 });
 
 const EventColorBar = styled(View)<EventColorBarProps>(({ memberColor }) => ({
-  width: 6,
+  width: scaledPixels(6),
   backgroundColor: memberColor,
 }));
 
 const EventContent = styled(View)({
   flex: 1,
-  padding: 10,
+  padding: scaledPixels(10),
 });
 
 const EventTitle = styled(Typography)({
-  fontSize: 16,
+  fontSize: scaledPixels(16),
   fontWeight: '600',
   color: '#333333',
-  marginBottom: 4,
+  marginBottom: scaledPixels(4),
 });
 
 const EventDetails = styled(View)({
@@ -68,12 +69,12 @@ const EventDetails = styled(View)({
 });
 
 const EventTime = styled(Typography)({
-  fontSize: 14,
+  fontSize: scaledPixels(14),
   color: '#757575',
 });
 
 const EventMember = styled(Typography)({
-  fontSize: 14,
+  fontSize: scaledPixels(14),
   color: '#757575',
   fontStyle: 'italic',
 });

@@ -48,7 +48,7 @@ export const Page = ({ children }: Props) => {
 
   return (
     <SpatialNavigationRoot
-      isActive={isActive}
+      isActive={true}
       onDirectionHandledWithoutMovement={onDirectionHandledWithoutMovement}
     >
       <SpatialNavigationKeyboardLocker />
