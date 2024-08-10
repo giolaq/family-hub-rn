@@ -4,8 +4,6 @@ import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
 import { Typography } from '../design-system/components/Typography';
-import { Box } from '../design-system/components/Box';
-import { Spacer } from '../design-system/components/Spacer';
 import { Button } from '../design-system/components/Button';
 import { Icon } from '../design-system/helpers/Icons';
 import { Page } from '../components/Page';
@@ -14,6 +12,7 @@ import TaskItem from '../components/TaskItem';
 import MessageItem from '../components/MessageItem';
 import Popup from '../components/Popup';
 import { scaledPixels } from '../hooks/useScale';
+import EventPopup from '../components/EventPopup';
 
 
 const FamilyHubHome = () => {
@@ -26,6 +25,12 @@ const FamilyHubHome = () => {
     { name: "Clean the kitchen", assignedTo: "Sarah", completed: false },
     { name: "Walk the dog", assignedTo: "Mike", completed: true },
   ]);
+  const [calendarEvents, setCalendarEvents] = useState<Event[]>([
+    { id: '1', title: "Sarah's Soccer Practice", date: "2024-08-10", time: "15:00", member: "Sarah" },
+    { id: '2', title: "Family Movie Night", date: "2024-08-10", time: "19:00", member: "All" },
+    { id: '3', title: "Dentist Appointment", date: "2024-08-11", time: "10:00", member: "John" },
+  ]);
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleOpenPopup = () => {
@@ -60,12 +65,41 @@ const FamilyHubHome = () => {
     );
   };
 
+  const [isEventPopupOpen, setIsEventPopupOpen] = useState(false);
 
-  const calendarEvents = [
-    { title: "Sarah's Soccer Practice", time: "3:00 PM", member: "Sarah" },
-    { title: "Family Movie Night", time: "7:00 PM", member: "All" },
-    { title: "Dentist Appointment", time: "10:00 AM", member: "John" },
-  ];
+  const handleOpenEventPopup = () => {
+    setIsEventPopupOpen(true);
+  };
+
+  const handleCloseEventPopup = () => {
+    setIsEventPopupOpen(false);
+  };
+
+  const handleSubmitEvent = (eventData: { title: string; date: string; time: string; assignedTo: string }) => {
+    const newEvent: Event = {
+      id: Date.now().toString(), // Simple way to generate a unique ID
+      title: eventData.title,
+      date: eventData.date,
+      time: eventData.time,
+      member: eventData.assignedTo,
+    };
+
+    setCalendarEvents(prevEvents => [...prevEvents, newEvent]);
+    setIsEventPopupOpen(false);
+
+    // Optional: Sort events by date and time
+    sortEvents();
+  };
+
+  const sortEvents = () => {
+    setCalendarEvents(prevEvents => 
+      [...prevEvents].sort((a, b) => {
+        const dateA = new Date(`${a.date}T${a.time}`);
+        const dateB = new Date(`${b.date}T${b.time}`);
+        return dateA.getTime() - dateB.getTime();
+      })
+    );
+  };
 
   const messages = [
     { sender: "Mom", preview: "Don't forget to pick up milk on your way home!", time: "10:30 AM" },
@@ -135,7 +169,7 @@ const FamilyHubHome = () => {
         <QuickActionsContent>
         <SpatialNavigationView direction='horizontal' >
           <SpatialNavigationFocusableView>
-          <ActionButton icon="CalendarPlus" label="Add Event" onClick={() => { }} />
+          <ActionButton icon="CalendarPlus" label="New Event" onClick={handleOpenEventPopup} />
           </SpatialNavigationFocusableView>
           <SpatialNavigationFocusableView onSelect={handleOpenPopup}>
           <ActionButton icon="ClipboardList" label="New Task" onClick={handleOpenPopup} />
@@ -155,6 +189,11 @@ const FamilyHubHome = () => {
         isOpen={isPopupOpen}
         onClose={handleClosePopup}
         onSubmit={handleSubmit}
+      />
+       <EventPopup
+        isOpen={isEventPopupOpen}
+        onClose={handleCloseEventPopup}
+        onSubmit={handleSubmitEvent}
       />
     </Page>
   );
