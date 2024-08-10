@@ -115,95 +115,84 @@ const generateTimeOptions = () => {
 };
 
 const StyledPicker = styled(Picker)({
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: scaledPixels(5),
-    padding: scaledPixels(10),
-    fontSize: scaledPixels(16),
-    color: '#333333',
-    backgroundColor: '#FFFFFF',
-    width: '100%',
-  });
-  
+  borderWidth: 2,
+  borderColor: '#E0E0E0',
+  borderRadius: scaledPixels(10),
+  padding: scaledPixels(15),
+  fontSize: scaledPixels(28),
+  color: '#333333',
+  backgroundColor: '#FFFFFF',
+  width: '100%',
+  height: scaledPixels(60),
+});
+
 const PopupOverlay = styled(View)({
   position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
   justifyContent: 'center',
   alignItems: 'center',
 });
 
 const PopupContent = styled(View)({
   backgroundColor: '#FFFFFF',
-  borderRadius: scaledPixels(10),
-  padding: scaledPixels(20),
-  width: scaledPixels(400),
+  borderRadius: scaledPixels(20),
+  padding: scaledPixels(40),
+  width: scaledPixels(800),
   maxWidth: '90%',
-  maxHeight: '80%',
+  maxHeight: '90%',
 });
 
 const PopupTitle = styled(Typography)({
-  fontSize: scaledPixels(24),
+  fontSize: scaledPixels(48),
   fontWeight: '600',
   color: '#4A90E2',
-  marginBottom: scaledPixels(20),
+  marginBottom: scaledPixels(40),
 });
 
 const FormGroup = styled(View)({
-  marginBottom: scaledPixels(15),
+  marginBottom: scaledPixels(30),
 });
 
 const Label = styled(Typography)({
-  fontSize: scaledPixels(16),
+  fontSize: scaledPixels(32),
   color: '#333333',
-  marginBottom: scaledPixels(5),
+  marginBottom: scaledPixels(10),
 });
 
 const Input = styled.TextInput({
-  borderWidth: 1,
+  borderWidth: 2,
   borderColor: '#E0E0E0',
-  borderRadius: scaledPixels(5),
-  padding: scaledPixels(10),
-  fontSize: scaledPixels(16),
+  borderRadius: scaledPixels(10),
+  padding: scaledPixels(15),
+  fontSize: scaledPixels(28),
   color: '#333333',
-});
-
-const DateTimeButton = styled(TouchableOpacity)({
-  borderWidth: 1,
-  borderColor: '#E0E0E0',
-  borderRadius: scaledPixels(5),
-  padding: scaledPixels(10),
-  backgroundColor: '#F7F9FC',
-});
-
-const DateTimeText = styled(Typography)({
-  fontSize: scaledPixels(16),
-  color: '#333333',
+  height: scaledPixels(60),
 });
 
 const ButtonGroup = styled(View)({
   flexDirection: 'row',
   justifyContent: 'flex-end',
-  marginTop: scaledPixels(20),
+  marginTop: scaledPixels(40),
 });
 
 const Button = styled(TouchableOpacity)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
   backgroundColor: isSecondary ? '#FFFFFF' : '#4A90E2',
-  borderRadius: scaledPixels(5),
-  padding: scaledPixels(10),
-  marginLeft: scaledPixels(10),
-  minWidth: scaledPixels(100),
+  borderRadius: scaledPixels(10),
+  padding: scaledPixels(20),
+  marginLeft: scaledPixels(20),
+  minWidth: scaledPixels(200),
   alignItems: 'center',
-  borderWidth: isSecondary ? 1 : 0,
+  borderWidth: isSecondary ? 2 : 0,
   borderColor: isSecondary ? '#4A90E2' : 'transparent',
 }));
 
 const ButtonText = styled(Typography)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
   color: isSecondary ? '#4A90E2' : '#FFFFFF',
-  fontSize: scaledPixels(16),
+  fontSize: scaledPixels(32),
   fontWeight: '600',
 }));
 

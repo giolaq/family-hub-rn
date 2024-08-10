@@ -89,24 +89,25 @@ const EventContent = styled(View)({
 });
 
 const EventTitle = styled(Typography)({
-  fontSize: scaledPixels(16),
+  fontSize: scaledPixels(28),
   fontWeight: '600',
   color: '#333333',
   marginBottom: scaledPixels(4),
 });
 
 const EventDetails = styled(View)({
+  fontSize: scaledPixels(22),
   flexDirection: 'row',
   justifyContent: 'space-between',
 });
 
 const EventTime = styled(Typography)({
-  fontSize: scaledPixels(14),
+  fontSize: scaledPixels(22),
   color: '#757575',
 });
 
 const EventMember = styled(Typography)({
-  fontSize: scaledPixels(14),
+  fontSize: scaledPixels(22),
   color: '#757575',
   fontStyle: 'italic',
 });

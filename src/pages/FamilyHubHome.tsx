@@ -4,6 +4,7 @@ import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
 import { Typography } from '../design-system/components/Typography';
+
 import { Button } from '../design-system/components/Button';
 import { Icon } from '../design-system/helpers/Icons';
 import { Page } from '../components/Page';
@@ -109,19 +110,17 @@ const FamilyHubHome = () => {
 
   return (
     <Page>
-      <Container>
-        
-        <HeaderBar>
-          <Logo source={require('../../assets/icon.png')} />
-          <Typography variant="title">{currentTime.toLocaleTimeString()}</Typography>
-          <WeatherWidget>
-            <Typography variant="body">{weather.temp}</Typography>
-            <Typography variant="body">{weather.condition}</Typography>
-          </WeatherWidget>
-        </HeaderBar>
+    <Container>
+      <HeaderBar>
+        <Logo source={require('../../assets/icon.png')} />
+        <Typography variant="title" style={styles.headerText}>{currentTime.toLocaleTimeString()}</Typography>
+        <WeatherWidget>
+          <Typography variant="body" style={styles.weatherText}>{weather.temp}</Typography>
+          <Typography variant="body" style={styles.weatherText}>{weather.condition}</Typography>
+        </WeatherWidget>
+      </HeaderBar>
 
-        <ContentWrapper>
-
+      <ContentWrapper>
         <MainContentArea>
           <SpatialNavigationView direction='horizontal'>
             <WidgetContainer>
@@ -133,7 +132,7 @@ const FamilyHubHome = () => {
                   ))}
                 </WidgetContent>
                 <DefaultFocus>
-                  <Button label="View All" onSelect={() => {}} />
+                  <Button label="View All" onSelect={() => {}} textStyle={styles.buttonText} />
                 </DefaultFocus>
               </CalendarWidget>
             </WidgetContainer>
@@ -158,91 +157,81 @@ const FamilyHubHome = () => {
                     <MessageItem key={index} message={message} />
                   ))}
                 </WidgetContent>
-                <Button label="New Message" onSelect={() => {}} />
+                <Button label="New Message" onSelect={() => {}} textStyle={styles.buttonText} />
               </MessageCenterWidget>
             </WidgetContainer>
           </SpatialNavigationView>
         </MainContentArea>
+      </ContentWrapper>
 
-        </ContentWrapper>
-        <QuickActionsBar>
+      <QuickActionsBar>
         <QuickActionsContent>
-        <SpatialNavigationView direction='horizontal' >
-          <SpatialNavigationFocusableView>
-          <ActionButton icon="CalendarPlus" label="New Event" onClick={handleOpenEventPopup} />
-          </SpatialNavigationFocusableView>
-          <SpatialNavigationFocusableView onSelect={handleOpenPopup}>
-          <ActionButton icon="ClipboardList" label="New Task" onClick={handleOpenPopup} />
-          </SpatialNavigationFocusableView>
-          <SpatialNavigationFocusableView>
-          <ActionButton icon="MessageSquare" label="Family Chat" onClick={() => { }} />
-          </SpatialNavigationFocusableView>
-          <SpatialNavigationFocusableView>
-          <ActionButton icon="Settings" label="Settings" onClick={() => { }} />
-          </SpatialNavigationFocusableView>
-        </SpatialNavigationView>
+          <SpatialNavigationView direction='horizontal'>
+            <SpatialNavigationFocusableView>
+              <ActionButton icon="CalendarPlus" label="New Event" onClick={handleOpenEventPopup} />
+            </SpatialNavigationFocusableView>
+            <SpatialNavigationFocusableView onSelect={handleOpenPopup}>
+              <ActionButton icon="ClipboardList" label="New Task" onClick={handleOpenPopup} />
+            </SpatialNavigationFocusableView>
+            <SpatialNavigationFocusableView>
+              <ActionButton icon="MessageSquare" label="Family Chat" onClick={() => {}} />
+            </SpatialNavigationFocusableView>
+            <SpatialNavigationFocusableView>
+              <ActionButton icon="Settings" label="Settings" onClick={() => {}} />
+            </SpatialNavigationFocusableView>
+          </SpatialNavigationView>
         </QuickActionsContent>
-        </QuickActionsBar>
-      </Container>
+      </QuickActionsBar>
+    </Container>
 
-      <Popup
-        isOpen={isPopupOpen}
-        onClose={handleClosePopup}
-        onSubmit={handleSubmit}
-      />
-       <EventPopup
-        isOpen={isEventPopupOpen}
-        onClose={handleCloseEventPopup}
-        onSubmit={handleSubmitEvent}
-      />
-    </Page>
+    <Popup isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleSubmit} />
+    <EventPopup isOpen={isEventPopupOpen} onClose={handleCloseEventPopup} onSubmit={handleSubmitEvent} />
+  </Page>
   );
 };
 const Container = styled(View)({
   flex: 1,
   backgroundColor: '#F7F9FC',
-  padding: scaledPixels(30),
+  padding: scaledPixels(40),
   display: 'flex',
   flexDirection: 'column',
 });
 
 const ContentWrapper = styled(View)({
   flex: 1,
-  justifyContent: 'center', // This will center the MainContentArea vertically
+  justifyContent: 'center',
 });
 
 const MainContentArea = styled(View)({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  height: scaledPixels(600), // Set a fixed height for the widget area
+  height: scaledPixels(700), // Increased height to accommodate larger text
 });
 
 const WidgetContainer = styled(View)({
-  width: scaledPixels(500), // Set a fixed width instead of maxWidth
-  height: '100%', // Take full height of MainContentArea
-  marginHorizontal: scaledPixels(10),
+  width: scaledPixels(550), // Increased width
+  height: '100%',
+  marginHorizontal: scaledPixels(15),
 });
 
 const WidgetBase = styled(View)({
   backgroundColor: '#FFFFFF',
-  borderRadius: scaledPixels(10),
-  padding: scaledPixels(20),
+  borderRadius: scaledPixels(15),
+  padding: scaledPixels(25),
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
 });
 
 const CalendarWidget = styled(WidgetBase)({});
-
 const TaskBoardWidget = styled(WidgetBase)({});
-
 const MessageCenterWidget = styled(WidgetBase)({});
 
 const WidgetTitle = styled(Typography)({
-  fontSize: scaledPixels(24),
+  fontSize: scaledPixels(36),
   fontWeight: '600',
-  marginBottom: scaledPixels(10),
+  marginBottom: scaledPixels(15),
   color: "#4A90E2",
 });
 
@@ -272,45 +261,41 @@ const HeaderBar = styled(View)({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  height: scaledPixels(80),
+  height: scaledPixels(100),
   width: '100%',
   backgroundColor: 'rgba(74, 144, 226, 0.9)',
-  paddingHorizontal: scaledPixels(20),
+  paddingHorizontal: scaledPixels(25),
+  marginBottom: scaledPixels(20),
 });
 
 const Logo = styled(Image)({
-  width: scaledPixels(150),
-  height: scaledPixels(50),
+  width: scaledPixels(200),
+  height: scaledPixels(70),
   resizeMode: 'contain',
 });
+
 
 const WeatherWidget = styled(View)({
   alignItems: 'center',
 });
 
-const FamilyMembersCarousel = styled(ScrollView)({
-  height: scaledPixels(120),
-  marginTop: scaledPixels(20),
-});
-
 const QuickActionsBar = styled(View)({
-  height: scaledPixels(160),
+  height: scaledPixels(180),
   backgroundColor: '#FFFFFF',
-  borderTopLeftRadius: scaledPixels(10),
-  borderTopRightRadius: scaledPixels(10),
+  borderTopLeftRadius: scaledPixels(15),
+  borderTopRightRadius: scaledPixels(15),
   marginTop: scaledPixels(20),
-  justifyContent: 'center', // Center content vertically
-  alignItems: 'center', // Center content horizontally
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 const QuickActionsContent = styled(View)({
   flexDirection: 'row',
-  justifyContent: 'center', // Center buttons horizontally
-  alignItems: 'center', // Center buttons vertically
-  width: '100%', // Take full width of parent
-  paddingTop: scaledPixels(30),
-  paddingBottom: scaledPixels(30),
-  paddingHorizontal: scaledPixels(60), // Add some horizontal padding
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  paddingVertical: scaledPixels(20),
+  paddingHorizontal: scaledPixels(40),
 });
 
 interface ActionButtonProps {
@@ -321,7 +306,7 @@ interface ActionButtonProps {
 
 const ActionButton: React.FC<ActionButtonProps> = ({ icon, label, onClick }) => (
   <ActionButtonContainer onPress={onClick}>
-    <Icon icon={icon} size={scaledPixels(48)} color="#4A90E2" />
+    <Icon icon={icon} size={scaledPixels(64)} color="#4A90E2" />
     <ActionButtonLabel>{label}</ActionButtonLabel>
   </ActionButtonContainer>
 );
@@ -329,29 +314,39 @@ const ActionButton: React.FC<ActionButtonProps> = ({ icon, label, onClick }) => 
 const ActionButtonContainer = styled(TouchableOpacity)({
   alignItems: 'center',
   justifyContent: 'center',
-  padding: scaledPixels(10),
-  width: scaledPixels(100), // Set a fixed width for each button
-  marginHorizontal: scaledPixels(10), // Add horizontal margin for spacing
+  padding: scaledPixels(15),
+  width: scaledPixels(140),
+  marginHorizontal: scaledPixels(20),
 });
 
 const ActionButtonLabel = styled(Typography)({
   color: "#4A90E2",
-  marginTop: scaledPixels(8),
+  marginTop: scaledPixels(10),
   textAlign: 'center',
-  fontSize: scaledPixels(14),
+  fontSize: scaledPixels(22),
 });
+
 
 const styles = StyleSheet.create({
   focusedElement: {
     borderColor: '#FFD700',
-    borderWidth: scaledPixels(3),
+    borderWidth: scaledPixels(4),
   },
   container: {
-    height: scaledPixels(10),
+    height: scaledPixels(15),
     backgroundColor: '#E0E0E0',
-    borderRadius: scaledPixels(5),
-    marginTop: scaledPixels(10),
+    borderRadius: scaledPixels(7),
+    marginTop: scaledPixels(15),
     overflow: 'hidden',
+  },
+  headerText: {
+    fontSize: scaledPixels(32),
+  },
+  weatherText: {
+    fontSize: scaledPixels(24),
+  },
+  buttonText: {
+    fontSize: scaledPixels(24),
   },
 });
 
