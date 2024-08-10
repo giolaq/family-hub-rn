@@ -36,22 +36,22 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete }) => {
 const TaskContainer = styled(View)({
   flexDirection: 'row',
   alignItems: 'center',
-  marginBottom: scaledPixels(10),
+  marginBottom: scaledPixels(20),
   backgroundColor: '#FFFFFF',
-  borderRadius: scaledPixels(8),
-  padding: scaledPixels(10),
-  elevation: 2,
+  borderRadius: scaledPixels(15),
+  padding: scaledPixels(20),
+  elevation: 4,
   shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
+  shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.1,
-  shadowRadius: scaledPixels(4),
+  shadowRadius: scaledPixels(8),
 });
 
 const Checkbox = styled(View)<CheckboxProps>(({ checked }) => ({
-  width: scaledPixels(20),
-  height: scaledPixels(20),
-  borderRadius: scaledPixels(4),
-  borderWidth: scaledPixels(2),
+  width: scaledPixels(40),
+  height: scaledPixels(40),
+  borderRadius: scaledPixels(8),
+  borderWidth: scaledPixels(3),
   borderColor: checked ? '#50E3C2' : '#757575',
   backgroundColor: checked ? '#50E3C2' : 'transparent',
 }));
@@ -61,17 +61,17 @@ const TaskContent = styled(View)({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginLeft: scaledPixels(10),
+  marginLeft: scaledPixels(20),
 });
 
 const TaskName = styled(Typography)<{ completed: boolean }>(({ completed }) => ({
-  fontSize: scaledPixels(16),
+  fontSize: scaledPixels(32),
   color: completed ? '#757575' : '#333333',
   textDecorationLine: completed ? 'line-through' : 'none',
 }));
 
 const AssignedTo = styled(Typography)({
-  fontSize: scaledPixels(14),
+  fontSize: scaledPixels(28),
   color: '#757575',
   fontStyle: 'italic',
 });

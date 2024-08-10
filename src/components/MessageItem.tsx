@@ -18,7 +18,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
   return (
     <MessageContainer>
       <SenderAvatar>
-        <Typography>{message.sender[0]}</Typography>
+        <AvatarText>{message.sender[0]}</AvatarText>
       </SenderAvatar>
       <MessageContent>
         <MessageHeader>
@@ -34,25 +34,31 @@ const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
 const MessageContainer = styled(View)({
   flexDirection: 'row',
   alignItems: 'center',
-  marginBottom: scaledPixels(10),
+  marginBottom: scaledPixels(20),
   backgroundColor: '#FFFFFF',
-  borderRadius: scaledPixels(8),
-  padding: scaledPixels(10),
-  elevation: 2,
+  borderRadius: scaledPixels(15),
+  padding: scaledPixels(20),
+  elevation: 4,
   shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
+  shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.1,
-  shadowRadius: scaledPixels(4),
+  shadowRadius: scaledPixels(8),
 });
 
 const SenderAvatar = styled(View)({
-  width: scaledPixels(40),
-  height: scaledPixels(40),
-  borderRadius: scaledPixels(20),
+  width: scaledPixels(80),
+  height: scaledPixels(80),
+  borderRadius: scaledPixels(40),
   backgroundColor: '#4A90E2',
   justifyContent: 'center',
   alignItems: 'center',
-  marginRight: scaledPixels(10),
+  marginRight: scaledPixels(20),
+});
+
+const AvatarText = styled(Typography)({
+  fontSize: scaledPixels(36),
+  color: '#FFFFFF',
+  fontWeight: 'bold',
 });
 
 const MessageContent = styled(View)({
@@ -63,24 +69,24 @@ const MessageHeader = styled(View)({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginBottom: scaledPixels(5),
+  marginBottom: scaledPixels(10),
 });
 
 const SenderName = styled(Typography)({
-  fontSize: scaledPixels(16),
+  fontSize: scaledPixels(32),
   fontWeight: '600',
   color: '#333333',
 });
 
 const MessageTime = styled(Typography)({
-  fontSize: scaledPixels(12),
+  fontSize: scaledPixels(24),
   color: '#757575',
 });
 
 const MessagePreview = styled(Typography)({
-  fontSize: scaledPixels(14),
+  fontSize: scaledPixels(28),
   color: '#757575',
-  numberOfLines: 1,
+  numberOfLines: 2,
   ellipsizeMode: 'tail',
 });
 

@@ -121,48 +121,54 @@ const FamilyHubHome = () => {
       </HeaderBar>
 
       <ContentWrapper>
-        <MainContentArea>
-          <SpatialNavigationView direction='horizontal'>
-            <WidgetContainer>
-              <CalendarWidget>
-                <WidgetTitle>Family Calendar</WidgetTitle>
-                <WidgetContent>
-                  {calendarEvents.map((event, index) => (
-                    <EventItem key={index} event={event} />
-                  ))}
-                </WidgetContent>
-                <DefaultFocus>
-                  <Button label="View All" onSelect={() => {}} textStyle={styles.buttonText} />
-                </DefaultFocus>
-              </CalendarWidget>
-            </WidgetContainer>
+          <MainContentArea>
+            <SpatialNavigationView direction='horizontal'>
+              <WidgetContainer>
+                <CalendarWidget>
+                  <WidgetTitle>Family Calendar</WidgetTitle>
+                  <WidgetContent>
+                    {calendarEvents.map((event, index) => (
+                      <EventItem key={index} event={event} />
+                    ))}
+                  </WidgetContent>
+                  <ButtonWrapper>
+                    <DefaultFocus>
+                      <Button label="View All" onSelect={() => {}} textStyle={styles.buttonText} />
+                    </DefaultFocus>
+                  </ButtonWrapper>
+                </CalendarWidget>
+              </WidgetContainer>
 
-            <WidgetContainer>
-              <TaskBoardWidget>
-                <WidgetTitle>Today's Tasks</WidgetTitle>
-                <WidgetContent>
-                  {tasks.map((task, index) => (
-                    <TaskItem key={index} task={task} onToggleComplete={toggleTaskComplete} />
-                  ))}
-                </WidgetContent>
-                <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
-              </TaskBoardWidget>
-            </WidgetContainer>
+              <WidgetContainer>
+                <TaskBoardWidget>
+                  <WidgetTitle>Today's Tasks</WidgetTitle>
+                  <WidgetContent>
+                    {tasks.map((task, index) => (
+                      <TaskItem key={index} task={task} onToggleComplete={toggleTaskComplete} />
+                    ))}
+                  </WidgetContent>
+                  <ProgressBarWrapper>
+                    <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
+                  </ProgressBarWrapper>
+                </TaskBoardWidget>
+              </WidgetContainer>
 
-            <WidgetContainer>
-              <MessageCenterWidget>
-                <WidgetTitle>Recent Messages</WidgetTitle>
-                <WidgetContent>
-                  {messages.map((message, index) => (
-                    <MessageItem key={index} message={message} />
-                  ))}
-                </WidgetContent>
-                <Button label="New Message" onSelect={() => {}} textStyle={styles.buttonText} />
-              </MessageCenterWidget>
-            </WidgetContainer>
-          </SpatialNavigationView>
-        </MainContentArea>
-      </ContentWrapper>
+              <WidgetContainer>
+                <MessageCenterWidget>
+                  <WidgetTitle>Recent Messages</WidgetTitle>
+                  <WidgetContent>
+                    {messages.map((message, index) => (
+                      <MessageItem key={index} message={message} />
+                    ))}
+                  </WidgetContent>
+                  <ButtonWrapper>
+                    <Button label="New Message" onSelect={() => {}} textStyle={styles.buttonText} />
+                  </ButtonWrapper>
+                </MessageCenterWidget>
+              </WidgetContainer>
+            </SpatialNavigationView>
+          </MainContentArea>
+        </ContentWrapper>
 
       <QuickActionsBar>
         <QuickActionsContent>
@@ -189,6 +195,7 @@ const FamilyHubHome = () => {
   </Page>
   );
 };
+
 const Container = styled(View)({
   flex: 1,
   backgroundColor: '#F7F9FC',
@@ -206,12 +213,11 @@ const MainContentArea = styled(View)({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  height: scaledPixels(700), // Increased height to accommodate larger text
 });
 
 const WidgetContainer = styled(View)({
-  width: scaledPixels(550), // Increased width
-  height: '100%',
+  width: scaledPixels(550),
+  height: scaledPixels(700), // Fixed height for all widgets
   marginHorizontal: scaledPixels(15),
 });
 
@@ -238,6 +244,15 @@ const WidgetTitle = styled(Typography)({
 const WidgetContent = styled(ScrollView)({
   flex: 1,
 });
+
+const ButtonWrapper = styled(View)({
+  marginTop: scaledPixels(15),
+});
+
+const ProgressBarWrapper = styled(View)({
+  marginTop: scaledPixels(15),
+});
+
 
 const ProgressBar = ({ progress }: { progress: number }) => {
   return (
