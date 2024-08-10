@@ -76,6 +76,7 @@ const FamilyHubHome = () => {
   return (
     <Page>
       <Container>
+        
         <HeaderBar>
           <Logo source={require('../../assets/icon.png')} />
           <Typography variant="title">{currentTime.toLocaleTimeString()}</Typography>
@@ -85,54 +86,51 @@ const FamilyHubHome = () => {
           </WeatherWidget>
         </HeaderBar>
 
-        <FamilyMembersCarousel>
-          {/* Add family member avatars here */}
-        </FamilyMembersCarousel>
-
-
-        <Popup isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleSubmit} />
+        <ContentWrapper>
 
         <MainContentArea>
-        <SpatialNavigationView direction='horizontal' >
-          <WidgetContainer>
-            <CalendarWidget>
-              <WidgetTitle>Family Calendar</WidgetTitle>
-              <WidgetContent>
-                {calendarEvents.map((event, index) => (
-                  <EventItem key={index} event={event} />
-                ))}
-              </WidgetContent>
-              <DefaultFocus>
-                <Button label="View All" onSelect={() => {}} />
-              </DefaultFocus>
-            </CalendarWidget>
-          </WidgetContainer>
+          <SpatialNavigationView direction='horizontal'>
+            <WidgetContainer>
+              <CalendarWidget>
+                <WidgetTitle>Family Calendar</WidgetTitle>
+                <WidgetContent>
+                  {calendarEvents.map((event, index) => (
+                    <EventItem key={index} event={event} />
+                  ))}
+                </WidgetContent>
+                <DefaultFocus>
+                  <Button label="View All" onSelect={() => {}} />
+                </DefaultFocus>
+              </CalendarWidget>
+            </WidgetContainer>
 
-          <WidgetContainer>
-            <TaskBoardWidget>
-              <WidgetTitle>Today's Tasks</WidgetTitle>
-              <WidgetContent>
-                {tasks.map((task, index) => (
-                  <TaskItem key={index} task={task} onToggleComplete={toggleTaskComplete} />
-                ))}
-              </WidgetContent>
-              <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
-            </TaskBoardWidget>
-          </WidgetContainer>
+            <WidgetContainer>
+              <TaskBoardWidget>
+                <WidgetTitle>Today's Tasks</WidgetTitle>
+                <WidgetContent>
+                  {tasks.map((task, index) => (
+                    <TaskItem key={index} task={task} onToggleComplete={toggleTaskComplete} />
+                  ))}
+                </WidgetContent>
+                <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
+              </TaskBoardWidget>
+            </WidgetContainer>
 
-          <WidgetContainer>
-            <MessageCenterWidget>
-              <WidgetTitle>Recent Messages</WidgetTitle>
-              <WidgetContent>
-                {messages.map((message, index) => (
-                  <MessageItem key={index} message={message} />
-                ))}
-              </WidgetContent>
-              <Button label="New Message" onSelect={() => {}} />
-            </MessageCenterWidget>
-          </WidgetContainer>
+            <WidgetContainer>
+              <MessageCenterWidget>
+                <WidgetTitle>Recent Messages</WidgetTitle>
+                <WidgetContent>
+                  {messages.map((message, index) => (
+                    <MessageItem key={index} message={message} />
+                  ))}
+                </WidgetContent>
+                <Button label="New Message" onSelect={() => {}} />
+              </MessageCenterWidget>
+            </WidgetContainer>
           </SpatialNavigationView>
         </MainContentArea>
+
+        </ContentWrapper>
         <QuickActionsBar>
         <QuickActionsContent>
         <SpatialNavigationView direction='horizontal' >
@@ -152,29 +150,39 @@ const FamilyHubHome = () => {
         </QuickActionsContent>
         </QuickActionsBar>
       </Container>
+
+      <Popup
+        isOpen={isPopupOpen}
+        onClose={handleClosePopup}
+        onSubmit={handleSubmit}
+      />
     </Page>
   );
 };
-
-
 const Container = styled(View)({
   flex: 1,
   backgroundColor: '#F7F9FC',
-  padding: scaledPixels(60),
+  padding: scaledPixels(30),
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const ContentWrapper = styled(View)({
+  flex: 1,
+  justifyContent: 'center', // This will center the MainContentArea vertically
 });
 
 const MainContentArea = styled(View)({
-  flex: 10,
   flexDirection: 'row',
   justifyContent: 'center',
-  alignItems: 'stretch',
-  marginTop: scaledPixels(20),
-  marginBottom: scaledPixels(20),
+  alignItems: 'center',
+  height: scaledPixels(600), // Set a fixed height for the widget area
 });
 
 const WidgetContainer = styled(View)({
+  width: scaledPixels(500), // Set a fixed width instead of maxWidth
+  height: '100%', // Take full height of MainContentArea
   marginHorizontal: scaledPixels(10),
-  maxWidth: scaledPixels(400), // Adjust this value as needed
 });
 
 const WidgetBase = styled(View)({
