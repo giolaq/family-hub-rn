@@ -14,6 +14,7 @@ import MessageItem from '../components/MessageItem';
 import Popup from '../components/Popup';
 import { scaledPixels } from '../hooks/useScale';
 import EventPopup from '../components/EventPopup';
+import MessagePopup from '../components/MessagePopup';
 
 
 const FamilyHubHome = () => {
@@ -31,8 +32,14 @@ const FamilyHubHome = () => {
     { id: '2', title: "Family Movie Night", date: "2024-08-10", time: "19:00", member: "All" },
     { id: '3', title: "Dentist Appointment", date: "2024-08-11", time: "10:00", member: "John" },
   ]);
+  const [messages, setMessages] = useState<any[]>([
+    { sender: "Mom", preview: "Don't forget to pick up milk on your way home!", time: "10:30 AM" },
+    { sender: "Dad", preview: "I'll be late for dinner tonight. Start without me.", time: "2:15 PM" },
+    { sender: "Sarah", preview: "Can someone give me a ride to soccer practice?", time: "4:45 PM" },
+  ])
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isMessagePopupOpen, setIsMessagePopupOpen] = useState(false);
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
@@ -52,6 +59,23 @@ const FamilyHubHome = () => {
     }
     setTasks([...tasks, newTask]);
   };
+
+  const handleOpenMessagePopup = () => {
+    setIsMessagePopupOpen(true);
+  };
+
+  const handleCloseMessagePopup = () => {
+    setIsMessagePopupOpen(false);
+  };
+
+  const handleSubmitMessage = (data: { sender: string; message: string, time: string }) => {
+    const newMessage = {
+      sender: data.sender,
+      preview: data.message,
+      time: data.time,
+    }
+    setMessages([...messages, newMessage]);
+  }
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -102,11 +126,11 @@ const FamilyHubHome = () => {
     );
   };
 
-  const messages = [
-    { sender: "Mom", preview: "Don't forget to pick up milk on your way home!", time: "10:30 AM" },
-    { sender: "Dad", preview: "I'll be late for dinner tonight. Start without me.", time: "2:15 PM" },
-    { sender: "Sarah", preview: "Can someone give me a ride to soccer practice?", time: "4:45 PM" },
-  ];
+  // const messages = [
+  //   { sender: "Mom", preview: "Don't forget to pick up milk on your way home!", time: "10:30 AM" },
+  //   { sender: "Dad", preview: "I'll be late for dinner tonight. Start without me.", time: "2:15 PM" },
+  //   { sender: "Sarah", preview: "Can someone give me a ride to soccer practice?", time: "4:45 PM" },
+  // ];
 
   return (
     <Page>
@@ -162,7 +186,7 @@ const FamilyHubHome = () => {
                     ))}
                   </WidgetContent>
                   <ButtonWrapper>
-                    <Button label="New Message" onSelect={() => {}} textStyle={styles.buttonText} />
+                    <Button label="New Message" onSelect={handleOpenMessagePopup} textStyle={styles.buttonText} />
                   </ButtonWrapper>
                 </MessageCenterWidget>
               </WidgetContainer>
@@ -192,6 +216,7 @@ const FamilyHubHome = () => {
 
     <Popup isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleSubmit} />
     <EventPopup isOpen={isEventPopupOpen} onClose={handleCloseEventPopup} onSubmit={handleSubmitEvent} />
+    <MessagePopup isOpen={isMessagePopupOpen} onClose={handleCloseMessagePopup} onSubmit={handleSubmitMessage} />
   </Page>
   );
 };
