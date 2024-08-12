@@ -116,6 +116,14 @@ const FamilyHubHome = () => {
     sortEvents();
   };
 
+  const handleMarkAllTasksComplete = () => {
+    const updatedTasks = tasks.map((task) => ({
+      ...task,
+      completed: true,
+    }));
+    setTasks(updatedTasks);
+  };
+
   const sortEvents = () => {
     setCalendarEvents(prevEvents => 
       [...prevEvents].sort((a, b) => {
@@ -174,6 +182,9 @@ const FamilyHubHome = () => {
                   <ProgressBarWrapper>
                     <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
                   </ProgressBarWrapper>
+                  <ButtonWrapper>
+                    <Button label="Mark All Complete" onSelect={handleMarkAllTasksComplete} textStyle={styles.buttonText} />
+                  </ButtonWrapper>
                 </TaskBoardWidget>
               </WidgetContainer>
 
