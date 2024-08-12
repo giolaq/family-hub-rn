@@ -22,25 +22,27 @@ interface CheckboxProps extends ViewProps {
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete, onDeleteTask }) => {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
-  
+
   return (
-    <TaskContainer onPointerEnter={() => setShowDeleteButton(true)} onPointerLeave={() => setShowDeleteButton(false)}>
-      <TouchableOpacity onPress={() => onToggleComplete(task.name)}>
-        <Checkbox checked={task.completed} />
-      </TouchableOpacity>
+    <TaskContainer 
+      onPointerEnter={() => setShowDeleteButton(true)} 
+      onPointerLeave={() => setShowDeleteButton(false)}
+    >
       <TaskContent>
-        <TaskName completed={task.completed}>{task.name}</TaskName>
-        <AssignedTo>{task.assignedTo}</AssignedTo>
+        <TouchableOpacity onPress={() => onToggleComplete(task.name)}>
+          <Checkbox checked={task.completed} />
+        </TouchableOpacity>
+        <TaskInfo>
+          <TaskName completed={task.completed}>{task.name}</TaskName>
+          <AssignedTo>{task.assignedTo}</AssignedTo>
+        </TaskInfo>
       </TaskContent>
-      <DeleteButtonContainer>
-        {showDeleteButton && (
-          <DeleteButton onPress={() => onDeleteTask(task.name)}>
-            <DeleteButtonText>
-              &times;
-            </DeleteButtonText>
-          </DeleteButton>
-        )}
-      </DeleteButtonContainer>
+      <DeleteButton 
+        show={showDeleteButton}
+        onPress={() => onDeleteTask(task.name)}
+      >
+        <DeleteButtonText>&times;</DeleteButtonText>
+      </DeleteButton>
     </TaskContainer>
   );
 };
@@ -51,12 +53,26 @@ const TaskContainer = styled(View)({
   marginBottom: scaledPixels(20),
   backgroundColor: '#FFFFFF',
   borderRadius: scaledPixels(15),
-  padding: scaledPixels(20),
+  overflow: 'hidden',
   elevation: 4,
   shadowColor: '#000',
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.1,
   shadowRadius: scaledPixels(8),
+  borderWidth: scaledPixels(3),  // Added thicker border
+  borderColor: '#E0E0E0',  // Light gray border color
+});
+
+const TaskContent = styled(View)({
+  flex: 1,
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: scaledPixels(20),
+});
+
+const TaskInfo = styled(View)({
+  flex: 1,
+  marginLeft: scaledPixels(20),
 });
 
 const Checkbox = styled(View)<CheckboxProps>(({ checked }) => ({
@@ -64,17 +80,9 @@ const Checkbox = styled(View)<CheckboxProps>(({ checked }) => ({
   height: scaledPixels(40),
   borderRadius: scaledPixels(8),
   borderWidth: scaledPixels(3),
-  borderColor: checked ? '#50E3C2' : '#757575',
-  backgroundColor: checked ? '#50E3C2' : 'transparent',
+  borderColor: checked ? '#4A90E2' : '#757575',
+  backgroundColor: checked ? '#4A90E2' : 'transparent',
 }));
-
-const TaskContent = styled(View)({
-  flex: 1,
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginLeft: scaledPixels(20),
-});
 
 const TaskName = styled(Typography)<{ completed: boolean }>(({ completed }) => ({
   fontSize: scaledPixels(32),
@@ -84,29 +92,23 @@ const TaskName = styled(Typography)<{ completed: boolean }>(({ completed }) => (
 
 const AssignedTo = styled(Typography)({
   fontSize: scaledPixels(28),
+  paddingTop: scaledPixels(12),
   color: '#757575',
   fontStyle: 'italic',
 });
 
-const DeleteButtonContainer = styled(View)({
-  position: 'absolute',
-  top: scaledPixels(20),
-  right: scaledPixels(20),
-});
-
-const DeleteButtonText = styled(Typography)({
-  fontSize: scaledPixels(30),
-});
-
-const DeleteButton = styled(TouchableOpacity)({
-  right: scaledPixels(8),
-  left: scaledPixels(8),
-  width: scaledPixels(40),
-  height: scaledPixels(40),
-  backgroundColor: '#808080',
-  borderRadius: scaledPixels(20),
+const DeleteButton = styled(TouchableOpacity)<{ show: boolean }>(({ show }) => ({
+  width: show ? scaledPixels(80) : 0,
+  height: '100%',
+  backgroundColor: '#FFA500',
   justifyContent: 'center',
   alignItems: 'center',
+  transition: 'width 0.3s ease-in-out',
+}));
+
+const DeleteButtonText = styled(Typography)({
+  fontSize: scaledPixels(40),
+  color: '#FFFFFF',
 });
 
 export default TaskItem;

@@ -298,7 +298,7 @@ const ProgressBar = ({ progress }: { progress: number }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#50E3C2', '#50E3C2']}
+        colors={['#4A90E2', '#4A90E2']}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 0 }}
         style={
