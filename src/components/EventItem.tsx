@@ -24,7 +24,7 @@ interface EventColorBarProps extends ViewProps {
 const EventItem: React.FC<EventItemProps> = ({ event }) => {
 
   const eventDate = new Date(`${event.date}T${event.time}`);
-  const formattedDate = format(eventDate, 'MMM d, yyyy');
+  const formattedDate = format(eventDate, 'MMM d');
   const formattedTime = format(eventDate, 'h:mm a');
 
   return (
@@ -64,7 +64,7 @@ const EventDateColumn = styled(View)({
 
 const EventDate = styled(Typography)({
   color: '#FFFFFF',
-  fontSize: scaledPixels(14),
+  fontSize: scaledPixels(24),
   fontWeight: 'bold',
   textAlign: 'center',
 });
@@ -75,7 +75,7 @@ const EventDetailsColumn = styled(View)({
 });
 
 const EventInfo = styled(Typography)({
-  fontSize: scaledPixels(14),
+  fontSize: scaledPixels(20),
   color: '#757575',
 });
 const EventColorBar = styled(View)<EventColorBarProps>(({ memberColor }) => ({
