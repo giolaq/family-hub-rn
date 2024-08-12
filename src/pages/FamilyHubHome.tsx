@@ -90,6 +90,10 @@ const FamilyHubHome = () => {
     );
   };
 
+  const deleteTask = (taskName: string) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.name !== taskName));
+  }
+
   const [isEventPopupOpen, setIsEventPopupOpen] = useState(false);
 
   const handleOpenEventPopup = () => {
@@ -176,7 +180,7 @@ const FamilyHubHome = () => {
                   <WidgetTitle>Today's Tasks</WidgetTitle>
                   <WidgetContent>
                     {tasks.map((task, index) => (
-                      <TaskItem key={index} task={task} onToggleComplete={toggleTaskComplete} />
+                      <TaskItem key={index} task={task} onToggleComplete={toggleTaskComplete} onDeleteTask={deleteTask} />
                     ))}
                   </WidgetContent>
                   <ProgressBarWrapper>

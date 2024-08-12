@@ -13,13 +13,14 @@ interface Task {
 interface TaskItemProps {
   task: Task;
   onToggleComplete: (taskName: string) => void;
+  onDeleteTask: (taskName: string) => void;
 }
 
 interface CheckboxProps extends ViewProps {
   checked: boolean;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete }) => {
+const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete, onDeleteTask }) => {
   return (
     <TaskContainer>
       <TouchableOpacity onPress={() => onToggleComplete(task.name)}>
@@ -29,6 +30,11 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete }) => {
         <TaskName completed={task.completed}>{task.name}</TaskName>
         <AssignedTo>{task.assignedTo}</AssignedTo>
       </TaskContent>
+      <DeleteButton onPress={() => onDeleteTask(task.name)}>
+        <DeleteButtonText>
+          &times;
+        </DeleteButtonText>
+      </DeleteButton>
     </TaskContainer>
   );
 };
@@ -74,6 +80,21 @@ const AssignedTo = styled(Typography)({
   fontSize: scaledPixels(28),
   color: '#757575',
   fontStyle: 'italic',
+});
+
+const DeleteButtonText = styled(Typography)({
+  fontSize: scaledPixels(30),
+});
+
+const DeleteButton = styled(TouchableOpacity)({
+  right: scaledPixels(8),
+  left: scaledPixels(8),
+  width: scaledPixels(40),
+  height: scaledPixels(40),
+  backgroundColor: '#808080',
+  borderRadius: scaledPixels(20),
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 export default TaskItem;
