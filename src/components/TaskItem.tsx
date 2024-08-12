@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, ViewProps, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 import { Typography } from '../design-system/components/Typography';
@@ -21,8 +21,10 @@ interface CheckboxProps extends ViewProps {
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete, onDeleteTask }) => {
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
+  
   return (
-    <TaskContainer>
+    <TaskContainer onPointerEnter={() => setShowDeleteButton(true)} onPointerLeave={() => setShowDeleteButton(false)}>
       <TouchableOpacity onPress={() => onToggleComplete(task.name)}>
         <Checkbox checked={task.completed} />
       </TouchableOpacity>
@@ -30,11 +32,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete, onDeleteTas
         <TaskName completed={task.completed}>{task.name}</TaskName>
         <AssignedTo>{task.assignedTo}</AssignedTo>
       </TaskContent>
-      <DeleteButton onPress={() => onDeleteTask(task.name)}>
-        <DeleteButtonText>
-          &times;
-        </DeleteButtonText>
-      </DeleteButton>
+      <DeleteButtonContainer>
+        {showDeleteButton && (
+          <DeleteButton onPress={() => onDeleteTask(task.name)}>
+            <DeleteButtonText>
+              &times;
+            </DeleteButtonText>
+          </DeleteButton>
+        )}
+      </DeleteButtonContainer>
     </TaskContainer>
   );
 };
@@ -80,6 +86,12 @@ const AssignedTo = styled(Typography)({
   fontSize: scaledPixels(28),
   color: '#757575',
   fontStyle: 'italic',
+});
+
+const DeleteButtonContainer = styled(View)({
+  position: 'absolute',
+  top: scaledPixels(20),
+  right: scaledPixels(20),
 });
 
 const DeleteButtonText = styled(Typography)({
