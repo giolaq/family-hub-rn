@@ -3,6 +3,9 @@ import styled from '@emotion/native';
 import { View, TouchableOpacity } from 'react-native';
 import { Typography } from '../design-system/components/Typography';
 import { scaledPixels } from '../hooks/useScale';
+import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
+import { SpatialNavigationOverlay } from './modals/SpatialNavigationOverlay/SpatialNavigationOverlay';
+import { Button } from '../design-system/components/Button';
 
 interface PopupProps {
   isOpen: boolean;
@@ -27,36 +30,55 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onSubmit }) => {
     <PopupOverlay>
       <PopupContent>
         <PopupTitle>Create a New Task</PopupTitle>
+        <SpatialNavigationOverlay isModalVisible={isOpen} hideModal={onClose}>
+        <SpatialNavigationView direction='vertical' >
         <FormGroup>
           <Label htmlFor="task">Task: </Label>
+          <SpatialNavigationFocusableView>
+          {({ isFocused }) => (
           <Input
             id="task"
             value={task}
             onChangeText={setTask}
             placeholder="Enter task"
+            style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
           />
+         )}
+          </SpatialNavigationFocusableView>
         </FormGroup>
         <FormGroup>
           <Label htmlFor="assignedTo">Assigned To: </Label>
+          <SpatialNavigationFocusableView>
+          {({ isFocused }) => (
           <Input
             id="assignedTo"
             value={assignedTo}
             onChangeText={setAssignedTo}
             placeholder="Enter name"
+            style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
           />
+          )}
+          </SpatialNavigationFocusableView>
         </FormGroup>
         <ButtonGroup>
-          <Button onPress={handleSubmit}>
-            <ButtonText>Submit</ButtonText>
-          </Button>
-          <Button onPress={onClose} isSecondary>
-            <ButtonText isSecondary>Cancel</ButtonText>
-          </Button>
+        <SpatialNavigationView direction='horizontal' >
+          <ButtonWrapper>
+           <Button label="Submit" onSelect={handleSubmit}  />
+          </ButtonWrapper>
+          <ButtonWrapper>
+          <DefaultFocus>
+          <Button label="Cancel" onSelect={onClose} />
+          </DefaultFocus>
+          </ButtonWrapper>
+        </SpatialNavigationView>
         </ButtonGroup>
+        </SpatialNavigationView>
+        </SpatialNavigationOverlay>
       </PopupContent>
     </PopupOverlay>
   );
 };
+
 
 const PopupOverlay = styled(View)({
   position: 'absolute',
@@ -105,27 +127,18 @@ const Input = styled.TextInput({
   height: scaledPixels(60),
 });
 
+
 const ButtonGroup = styled(View)({
   flexDirection: 'row',
   justifyContent: 'flex-end',
+  paddingEnd: scaledPixels(40),
   marginTop: scaledPixels(40),
+  marginBottom: scaledPixels(20), // Add space at the bottom
 });
 
-const Button = styled(TouchableOpacity)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
-  backgroundColor: isSecondary ? '#FFFFFF' : '#4A90E2',
-  borderRadius: scaledPixels(10),
-  padding: scaledPixels(20),
-  marginLeft: scaledPixels(20),
-  minWidth: scaledPixels(200),
-  alignItems: 'center',
-  borderWidth: isSecondary ? 2 : 0,
-  borderColor: isSecondary ? '#4A90E2' : 'transparent',
-}));
+const ButtonWrapper = styled(View)({
+  marginLeft: scaledPixels(20), // Add space between buttons
+});
 
-const ButtonText = styled(Typography)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
-  color: isSecondary ? '#4A90E2' : '#FFFFFF',
-  fontSize: scaledPixels(32),
-  fontWeight: '600',
-}));
 
 export default Popup;

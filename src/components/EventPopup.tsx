@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import styled from '@emotion/native';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Typography } from '../design-system/components/Typography';
 import { scaledPixels } from '../hooks/useScale';
+import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
+import { SpatialNavigationOverlay } from './modals/SpatialNavigationOverlay/SpatialNavigationOverlay';
+import { Button } from '../design-system/components/Button';
 
 interface EventPopupProps {
   isOpen: boolean;
@@ -35,53 +38,83 @@ const EventPopup: React.FC<EventPopupProps> = ({ isOpen, onClose, onSubmit }) =>
   return (
     <PopupOverlay>
       <PopupContent>
-        <ScrollView>
-          <PopupTitle>Create a New Event</PopupTitle>
-          <FormGroup>
-            <Label>Event Title:</Label>
-            <Input
-              value={title}
-              onChangeText={setTitle}
-              placeholder="Enter event title"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>Date:</Label>
-            <StyledPicker
-              selectedValue={date}
-              onValueChange={(itemValue) => setDate(itemValue)}
-            >
-              <Picker.Item label="Select a date" value="" />
-              {generateDateOptions()}
-            </StyledPicker>
-          </FormGroup>
-          <FormGroup>
-            <Label>Time:</Label>
-            <StyledPicker
-              selectedValue={time}
-              onValueChange={(itemValue) => setTime(itemValue)}
-            >
-              <Picker.Item label="Select a time" value="" />
-              {generateTimeOptions()}
-            </StyledPicker>
-          </FormGroup>
-          <FormGroup>
-            <Label>Assigned To:</Label>
-            <Input
-              value={assignedTo}
-              onChangeText={setAssignedTo}
-              placeholder="Enter name"
-            />
-          </FormGroup>
-          <ButtonGroup>
-            <Button onPress={handleSubmit}>
-              <ButtonText>Create Event</ButtonText>
-            </Button>
-            <Button onPress={onClose} isSecondary>
-              <ButtonText isSecondary>Cancel</ButtonText>
-            </Button>
-          </ButtonGroup>
-        </ScrollView>
+        <PopupTitle>Create a New Event</PopupTitle>
+        <SpatialNavigationOverlay isModalVisible={isOpen} hideModal={onClose}>
+          <ScrollView>
+            <SpatialNavigationView direction='vertical'>
+              <FormGroup>
+                <Label htmlFor="title">Event Title:</Label>
+                <SpatialNavigationFocusableView>
+                  {({ isFocused }) => (
+                    <Input
+                      id="title"
+                      value={title}
+                      onChangeText={setTitle}
+                      placeholder="Enter event title"
+                      style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+                    />
+                  )}
+                </SpatialNavigationFocusableView>
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="date">Date:</Label>
+                <SpatialNavigationFocusableView>
+                  {({ isFocused }) => (
+                    <StyledPicker
+                      selectedValue={date}
+                      onValueChange={(itemValue) => setDate(itemValue)}
+                      style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+                    >
+                      <Picker.Item label="Select a date" value="" />
+                      {generateDateOptions()}
+                    </StyledPicker>
+                  )}
+                </SpatialNavigationFocusableView>
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="time">Time:</Label>
+                <SpatialNavigationFocusableView>
+                  {({ isFocused }) => (
+                    <StyledPicker
+                      selectedValue={time}
+                      onValueChange={(itemValue) => setTime(itemValue)}
+                      style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+                    >
+                      <Picker.Item label="Select a time" value="" />
+                      {generateTimeOptions()}
+                    </StyledPicker>
+                  )}
+                </SpatialNavigationFocusableView>
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="assignedTo">Assigned To:</Label>
+                <SpatialNavigationFocusableView>
+                  {({ isFocused }) => (
+                    <Input
+                      id="assignedTo"
+                      value={assignedTo}
+                      onChangeText={setAssignedTo}
+                      placeholder="Enter name"
+                      style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+                    />
+                  )}
+                </SpatialNavigationFocusableView>
+              </FormGroup>
+              <ButtonGroup>
+                <SpatialNavigationView direction='horizontal'>
+                  <ButtonWrapper>
+                    <Button label="Create Event" onSelect={handleSubmit} />
+                  </ButtonWrapper>
+                  <ButtonWrapper>
+                    <DefaultFocus>
+                       <Button label="Cancel" onSelect={onClose} />
+                     </DefaultFocus>
+                  </ButtonWrapper>
+                </SpatialNavigationView>
+              </ButtonGroup>
+            </SpatialNavigationView>
+          </ScrollView>
+        </SpatialNavigationOverlay>
       </PopupContent>
     </PopupOverlay>
   );
@@ -113,19 +146,6 @@ const generateTimeOptions = () => {
   }
   return options;
 };
-
-const StyledPicker = styled(Picker)({
-  borderWidth: 2,
-  borderColor: '#E0E0E0',
-  borderRadius: scaledPixels(10),
-  padding: scaledPixels(15),
-  fontSize: scaledPixels(28),
-  color: '#333333',
-  backgroundColor: '#FFFFFF',
-  width: '100%',
-  height: scaledPixels(60),
-});
-
 const PopupOverlay = styled(View)({
   position: 'absolute',
   top: 0,
@@ -173,27 +193,30 @@ const Input = styled.TextInput({
   height: scaledPixels(60),
 });
 
+const StyledPicker = styled(Picker)({
+  borderWidth: 2,
+  borderColor: '#E0E0E0',
+  borderRadius: scaledPixels(10),
+  padding: scaledPixels(15),
+  fontSize: scaledPixels(28),
+  color: '#333333',
+  backgroundColor: '#FFFFFF',
+  width: '100%',
+  height: scaledPixels(60),
+});
+
+
 const ButtonGroup = styled(View)({
   flexDirection: 'row',
   justifyContent: 'flex-end',
+  paddingEnd: scaledPixels(40),
   marginTop: scaledPixels(40),
+  marginBottom: scaledPixels(20), // Add space at the bottom
 });
 
-const Button = styled(TouchableOpacity)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
-  backgroundColor: isSecondary ? '#FFFFFF' : '#4A90E2',
-  borderRadius: scaledPixels(10),
-  padding: scaledPixels(20),
-  marginLeft: scaledPixels(20),
-  minWidth: scaledPixels(200),
-  alignItems: 'center',
-  borderWidth: isSecondary ? 2 : 0,
-  borderColor: isSecondary ? '#4A90E2' : 'transparent',
-}));
+const ButtonWrapper = styled(View)({
+  marginLeft: scaledPixels(20), // Add space between buttons
+});
 
-const ButtonText = styled(Typography)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
-  color: isSecondary ? '#4A90E2' : '#FFFFFF',
-  fontSize: scaledPixels(32),
-  fontWeight: '600',
-}));
 
 export default EventPopup;

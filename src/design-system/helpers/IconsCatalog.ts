@@ -9,7 +9,8 @@ import {
   Clapperboard,
   CalendarPlus,
   ClipboardList,
-  MessageSquare
+  MessageSquare,
+  BotIcon
 } from 'lucide-react-native';
 
 export const iconsCatalog = {
@@ -23,7 +24,8 @@ export const iconsCatalog = {
   Play: Play,
   CalendarPlus: CalendarPlus,
   ClipboardList: ClipboardList,
-  MessageSquare: MessageSquare
+  MessageSquare: MessageSquare,
+  Bot: BotIcon,
 };
 
 export type IconName = keyof typeof iconsCatalog;

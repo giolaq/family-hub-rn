@@ -16,7 +16,6 @@ import { scaledPixels } from '../hooks/useScale';
 import EventPopup from '../components/EventPopup';
 import MessagePopup from '../components/MessagePopup';
 
-
 const FamilyHubHome = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [weather, setWeather] = useState({ temp: '22°C', condition: 'Sunny' });
@@ -150,23 +149,37 @@ const FamilyHubHome = () => {
     );
   };
 
-  // const messages = [
-  //   { sender: "Mom", preview: "Don't forget to pick up milk on your way home!", time: "10:30 AM" },
-  //   { sender: "Dad", preview: "I'll be late for dinner tonight. Start without me.", time: "2:15 PM" },
-  //   { sender: "Sarah", preview: "Can someone give me a ride to soccer practice?", time: "4:45 PM" },
-  // ];
+  const handleAIAssistant = () => {
+    // Implement AI Assistant functionality
+    console.log("AI Assistant clicked");
+  };
+
+  const handleSettings = () => {
+    // Implement Settings functionality
+    console.log("Settings clicked");
+  };
 
   return (
     <Page>
     <Container>
-      <HeaderBar>
-        <Logo source={require('../../assets/familyHub-logo-t.png')} />
-        <Typography variant="title" style={styles.headerText}>{currentTime.toLocaleTimeString()}</Typography>
-        <WeatherWidget>
-          <Typography variant="body" style={styles.weatherText}>{weather.temp}</Typography>
-          <Typography variant="body" style={styles.weatherText}>{weather.condition}</Typography>
-        </WeatherWidget>
-      </HeaderBar>
+    <SpatialNavigationView direction='vertical'>
+        <HeaderBar>
+          <DateTimeWidget>
+            <Typography style={styles.dateText}>
+              {currentTime.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            </Typography>
+            <Typography  style={styles.timeText}>
+              {currentTime.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+            </Typography>
+          </DateTimeWidget>
+          <TitleWidget>
+            <Typography style={styles.titleText}>FamilyHub</Typography>
+          </TitleWidget>
+          <WeatherWidget>
+            <Typography style={styles.weatherText}>{weather.temp}</Typography>
+            <Typography style={styles.weatherText}>{weather.condition}</Typography>
+          </WeatherWidget>
+        </HeaderBar>
 
       <ContentWrapper>
           <MainContentArea>
@@ -175,13 +188,13 @@ const FamilyHubHome = () => {
               <WidgetContainer>
                 <CalendarWidget>
                   <WidgetTitle>Family Calendar</WidgetTitle>
-                  <SpatialNavigationView direction='vertical' >
                   <WidgetContent>
+                  <SpatialNavigationView direction='vertical' >
                     {calendarEvents.map((event, index) => (
                       <EventItem key={index} event={event} />
                     ))}
+                   </SpatialNavigationView>
                   </WidgetContent>
-                  </SpatialNavigationView>
                   <SpatialNavigationView direction='horizontal' >
                   <ButtonWrapper>
                     <DefaultFocus>
@@ -239,28 +252,28 @@ const FamilyHubHome = () => {
                 </MessageCenterWidget>
               </WidgetContainer>
             </SpatialNavigationView>
+          
             </SpatialNavigationView>
           </MainContentArea>
         </ContentWrapper>
 
-      <QuickActionsBar>
-        <QuickActionsContent>
-          <SpatialNavigationView direction='horizontal'>
-            <SpatialNavigationFocusableView>
-              <ActionButton icon="CalendarPlus" label="New Event" onClick={handleOpenEventPopup} />
-            </SpatialNavigationFocusableView>
-            <SpatialNavigationFocusableView onSelect={handleOpenPopup}>
-              <ActionButton icon="ClipboardList" label="New Task" onClick={handleOpenPopup} />
-            </SpatialNavigationFocusableView>
-            <SpatialNavigationFocusableView>
-              <ActionButton icon="MessageSquare" label="Family Chat" onClick={() => {}} />
-            </SpatialNavigationFocusableView>
-            <SpatialNavigationFocusableView>
-              <ActionButton icon="Settings" label="Settings" onClick={() => {}} />
-            </SpatialNavigationFocusableView>
-          </SpatialNavigationView>
-        </QuickActionsContent>
-      </QuickActionsBar>
+        <QuickActionsBar>
+        <SpatialNavigationView direction='horizontal'>
+          <QuickActionsContent>
+              <CenteredContent>
+                  <SpatialNavigationFocusableView>
+                    <ActionButton icon="Bot" label="AI Assistant" onClick={handleAIAssistant} />
+                  </SpatialNavigationFocusableView>
+              </CenteredContent>
+              <RightContent>
+                  <SpatialNavigationFocusableView>
+                    <ActionButton icon="Settings" label="Settings" onClick={handleSettings} />
+                  </SpatialNavigationFocusableView>
+              </RightContent>
+            </QuickActionsContent>
+        </SpatialNavigationView>
+        </QuickActionsBar>
+    </SpatialNavigationView>
     </Container>
 
     <Popup isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleSubmit} />
@@ -269,6 +282,29 @@ const FamilyHubHome = () => {
   </Page>
   );
 };
+
+const HeaderBar = styled(View)({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: scaledPixels(100),
+  width: '100%',
+  backgroundColor: 'rgba(74, 144, 226, 0.9)',
+  paddingHorizontal: scaledPixels(25),
+  marginBottom: scaledPixels(20),
+});
+
+const DateTimeWidget = styled(View)({
+  alignItems: 'flex-start',
+});
+
+const TitleWidget = styled(View)({
+  alignItems: 'center',
+});
+
+const WeatherWidget = styled(View)({
+  alignItems: 'flex-end',
+});
 
 const Container = styled(View)({
   flex: 1,
@@ -348,47 +384,33 @@ const ProgressBar = ({ progress }: { progress: number }) => {
     </View>
   );
 };
-
-const HeaderBar = styled(View)({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  height: scaledPixels(100),
-  width: '100%',
-  backgroundColor: 'rgba(74, 144, 226, 0.9)',
-  paddingHorizontal: scaledPixels(25),
-  marginBottom: scaledPixels(20),
-});
-
-const Logo = styled(Image)({
-  width: scaledPixels(200),
-  height: scaledPixels(70),
-  resizeMode: 'contain',
-});
-
-
-const WeatherWidget = styled(View)({
-  alignItems: 'center',
-});
-
 const QuickActionsBar = styled(View)({
   height: scaledPixels(180),
   backgroundColor: '#FFFFFF',
   borderTopLeftRadius: scaledPixels(15),
   borderTopRightRadius: scaledPixels(15),
   marginTop: scaledPixels(20),
-  justifyContent: 'center',
-  alignItems: 'center',
 });
 
 const QuickActionsContent = styled(View)({
   flexDirection: 'row',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   alignItems: 'center',
+  height: '100%',
   width: '100%',
-  paddingVertical: scaledPixels(20),
   paddingHorizontal: scaledPixels(40),
 });
+
+const CenteredContent = styled(View)({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+const RightContent = styled(View)({
+  justifyContent: 'center',
+});
+
 
 interface ActionButtonProps {
   icon: string;
@@ -408,7 +430,6 @@ const ActionButtonContainer = styled(TouchableOpacity)({
   justifyContent: 'center',
   padding: scaledPixels(15),
   width: scaledPixels(140),
-  marginHorizontal: scaledPixels(20),
 });
 
 const ActionButtonLabel = styled(Typography)({
@@ -434,11 +455,26 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: scaledPixels(32),
   },
-  weatherText: {
-    fontSize: scaledPixels(24),
-  },
   buttonText: {
     fontSize: scaledPixels(24),
+  },
+  dateText: {
+    fontSize: scaledPixels(18),
+    color: '#FFFFFF',
+  },
+  timeText: {
+    fontSize: scaledPixels(32),
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  titleText: {
+    fontSize: scaledPixels(40),
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  weatherText: {
+    fontSize: scaledPixels(24),
+    color: '#FFFFFF',
   },
 });
 

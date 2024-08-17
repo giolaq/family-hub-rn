@@ -18,9 +18,12 @@ const useLockParentSpatialNavigator = (isModalVisible: boolean) => {
   const { lock, unlock } = useLockSpatialNavigation();
   useEffect(() => {
     if (isModalVisible) {
+      console.log("Locked controls on modal");
       lock();
       return () => {
         unlock();
+        console.log("Unlock controls on modal");
+
       };
     }
   }, [isModalVisible, lock, unlock]);

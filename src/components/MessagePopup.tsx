@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import styled from '@emotion/native';
-import { View, TouchableOpacity } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Typography } from '../design-system/components/Typography';
 import { scaledPixels } from '../hooks/useScale';
 import { Picker } from '@react-native-picker/picker';
+import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
+import { SpatialNavigationOverlay } from './modals/SpatialNavigationOverlay/SpatialNavigationOverlay';
+import { Button } from '../design-system/components/Button';
 
 interface MessagePopupProps {
   isOpen: boolean;
@@ -15,7 +18,7 @@ const MessagePopup: React.FC<MessagePopupProps> = ({ isOpen, onClose, onSubmit }
   const [sender, setSender] = useState('');
   const [message, setMessage] = useState('');
 
-  const senders = ["Mom", "Dad", "Sarah", "Lisa", "John", "Mike"]
+  const senders = ["Mom", "Dad", "Sarah", "Lisa", "John", "Mike"];
 
   const handleSubmit = () => {
     const time = getCurrentTime();
@@ -44,50 +47,71 @@ const MessagePopup: React.FC<MessagePopupProps> = ({ isOpen, onClose, onSubmit }
     <PopupOverlay>
       <PopupContent>
         <PopupTitle>Create a New Message</PopupTitle>
-        <FormGroup>
-          <Label>Sender: </Label>
-          <StyledPicker
-              selectedValue={sender}
-              onValueChange={(itemValue : string) => setSender(itemValue)}
-            >
-              <Picker.Item label="Select a sender" value="" />
-              {senders.map((senderValue, index) => (
-                <Picker.Item key={index} label={senderValue} value={senderValue}/>
-              ))}
-            </StyledPicker>
-        </FormGroup>
-        <FormGroup>
-          <Label>Message: </Label>
-          <Input
-            value={message}
-            onChangeText={setMessage}
-            placeholder="Enter Message"
-          />
-        </FormGroup>
-        <ButtonGroup>
-          <Button onPress={handleSubmit}>
-            <ButtonText>Submit</ButtonText>
-          </Button>
-          <Button onPress={onClose} isSecondary>
-            <ButtonText isSecondary>Cancel</ButtonText>
-          </Button>
-        </ButtonGroup>
+        <SpatialNavigationOverlay isModalVisible={isOpen} hideModal={onClose}>
+          <ScrollView>
+            <SpatialNavigationView direction='vertical'>
+              <FormGroup>
+                <Label htmlFor="sender">Sender: </Label>
+                <SpatialNavigationFocusableView>
+                  {({ isFocused }) => (
+                    <StyledPicker
+                      selectedValue={sender}
+                      onValueChange={(itemValue: string) => setSender(itemValue)}
+                      style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+                    >
+                      <Picker.Item label="Select a sender" value="" />
+                      {senders.map((senderValue, index) => (
+                        <Picker.Item key={index} label={senderValue} value={senderValue} />
+                      ))}
+                    </StyledPicker>
+                  )}
+                </SpatialNavigationFocusableView>
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="message">Message: </Label>
+                <SpatialNavigationFocusableView>
+                  {({ isFocused }) => (
+                    <Input
+                      id="message"
+                      value={message}
+                      onChangeText={setMessage}
+                      placeholder="Enter Message"
+                      style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+                    />
+                  )}
+                </SpatialNavigationFocusableView>
+              </FormGroup>
+              <ButtonGroup>
+                <SpatialNavigationView direction='horizontal'>
+                  <ButtonWrapper>
+                    <Button label="Submit" onSelect={handleSubmit} />
+                  </ButtonWrapper>
+                  <ButtonWrapper>
+                    <DefaultFocus>
+                      <Button label="Cancel" onSelect={onClose} />
+                    </DefaultFocus>
+                  </ButtonWrapper>
+                </SpatialNavigationView>
+              </ButtonGroup>
+            </SpatialNavigationView>
+          </ScrollView>
+        </SpatialNavigationOverlay>
       </PopupContent>
     </PopupOverlay>
   );
 };
 
 const StyledPicker = styled(Picker)({
-    borderWidth: 2,
-    borderColor: '#E0E0E0',
-    borderRadius: scaledPixels(10),
-    padding: scaledPixels(15),
-    fontSize: scaledPixels(28),
-    color: '#333333',
-    backgroundColor: '#FFFFFF',
-    width: '100%',
-    height: scaledPixels(60),
-  });
+  borderWidth: 2,
+  borderColor: '#E0E0E0',
+  borderRadius: scaledPixels(10),
+  padding: scaledPixels(15),
+  fontSize: scaledPixels(28),
+  color: '#333333',
+  backgroundColor: '#FFFFFF',
+  width: '100%',
+  height: scaledPixels(60),
+});
 
 const PopupOverlay = styled(View)({
   position: 'absolute',
@@ -107,6 +131,18 @@ const PopupContent = styled(View)({
   width: scaledPixels(800),
   maxWidth: '90%',
   maxHeight: '90%',
+});
+
+const ButtonGroup = styled(View)({
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  paddingEnd: scaledPixels(40),
+  marginTop: scaledPixels(40),
+  marginBottom: scaledPixels(20), // Add space at the bottom
+});
+
+const ButtonWrapper = styled(View)({
+  marginLeft: scaledPixels(20), // Add space between buttons
 });
 
 const PopupTitle = styled(Typography)({
@@ -136,27 +172,5 @@ const Input = styled.TextInput({
   height: scaledPixels(60),
 });
 
-const ButtonGroup = styled(View)({
-  flexDirection: 'row',
-  justifyContent: 'flex-end',
-  marginTop: scaledPixels(40),
-});
-
-const Button = styled(TouchableOpacity)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
-  backgroundColor: isSecondary ? '#FFFFFF' : '#4A90E2',
-  borderRadius: scaledPixels(10),
-  padding: scaledPixels(20),
-  marginLeft: scaledPixels(20),
-  minWidth: scaledPixels(200),
-  alignItems: 'center',
-  borderWidth: isSecondary ? 2 : 0,
-  borderColor: isSecondary ? '#4A90E2' : 'transparent',
-}));
-
-const ButtonText = styled(Typography)<{ isSecondary?: boolean }>(({ isSecondary }) => ({
-  color: isSecondary ? '#4A90E2' : '#FFFFFF',
-  fontSize: scaledPixels(32),
-  fontWeight: '600',
-}));
 
 export default MessagePopup;
