@@ -262,12 +262,16 @@ const FamilyHubHome = () => {
           <QuickActionsContent>
               <CenteredContent>
                   <SpatialNavigationFocusableView>
-                    <ActionButton icon="Bot" label="AI Assistant" onClick={handleAIAssistant} />
+                  {({ isFocused }) => (
+                    <ActionButton icon="Bot" label="AI Assistant" onClick={handleAIAssistant} isFocused={isFocused} />
+                  )}
                   </SpatialNavigationFocusableView>
               </CenteredContent>
               <RightContent>
                   <SpatialNavigationFocusableView>
-                    <ActionButton icon="Settings" label="Settings" onClick={handleSettings} />
+                  {({ isFocused }) => (
+                    <ActionButton icon="Settings" label="Settings" onClick={handleSettings}  isFocused={isFocused} />
+                  )}
                   </SpatialNavigationFocusableView>
               </RightContent>
             </QuickActionsContent>
@@ -416,28 +420,30 @@ interface ActionButtonProps {
   icon: string;
   label: string;
   onClick: () => void;
+  isFocused: boolean,
 }
 
-const ActionButton: React.FC<ActionButtonProps> = ({ icon, label, onClick }) => (
-  <ActionButtonContainer onPress={onClick}>
-    <Icon icon={icon} size={scaledPixels(64)} color="#4A90E2" />
-    <ActionButtonLabel>{label}</ActionButtonLabel>
+const ActionButton: React.FC<ActionButtonProps> = ({ icon, label, onClick, isFocused }) => (
+  <ActionButtonContainer onPress={onClick} isFocused={isFocused}>
+    <Icon icon={icon} size={scaledPixels(64)} color={isFocused ? 'white' : 'black'} />
+    <ActionButtonLabel isFocused={isFocused}>{label}</ActionButtonLabel>
   </ActionButtonContainer>
 );
 
-const ActionButtonContainer = styled(TouchableOpacity)({
+const ActionButtonContainer = styled(TouchableOpacity)<{ isFocused: boolean }>(({ isFocused }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   padding: scaledPixels(15),
   width: scaledPixels(140),
-});
+  backgroundColor: isFocused ? 'blue' : 'white',
+}));
 
-const ActionButtonLabel = styled(Typography)({
-  color: "#4A90E2",
+const ActionButtonLabel = styled(Typography)<{ isFocused: boolean }>(({ isFocused }) => ({
+  color: isFocused ? 'white' : 'black',
   marginTop: scaledPixels(10),
   textAlign: 'center',
   fontSize: scaledPixels(22),
-});
+}));
 
 
 const styles = StyleSheet.create({
