@@ -181,6 +181,7 @@ const FamilyHubHome = () => {
                   </WidgetContent>
                   <ButtonWrapper>
                     <DefaultFocus>
+                      <Button label="New Event" onSelect={handleOpenEventPopup} textStyle={styles.buttonText} />
                       <Button label="View All" onSelect={() => {}} textStyle={styles.buttonText} />
                     </DefaultFocus>
                   </ButtonWrapper>
@@ -199,6 +200,7 @@ const FamilyHubHome = () => {
                     <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
                   </ProgressBarWrapper>
                   <ButtonWrapper>
+                    <Button label="New Task" onSelect={handleOpenPopup} textStyle={styles.buttonText} />
                     <Button label={allCompleted ? "Undo" : "Mark All Complete"} onSelect={handleMarkAllTasksComplete} textStyle={styles.buttonText} />
                   </ButtonWrapper>
                 </TaskBoardWidget>
@@ -299,6 +301,9 @@ const WidgetContent = styled(ScrollView)({
 
 const ButtonWrapper = styled(View)({
   marginTop: scaledPixels(15),
+  flexDirection: 'row',
+  alignItems: 'center',
+  columnGap: scaledPixels(10),
 });
 
 const ProgressBarWrapper = styled(View)({
