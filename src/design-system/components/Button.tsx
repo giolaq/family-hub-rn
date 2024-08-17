@@ -35,7 +35,7 @@ export const Button = ({ label, onSelect }: ButtonProps) => {
 
 const Container = styled(Animated.View)<{ isFocused: boolean }>(({ isFocused, theme }) => ({
   alignSelf: 'baseline',
-  backgroundColor: isFocused ? 'blue' : 'white',
+  backgroundColor: isFocused ? '#4A90E2' : 'white',
   padding: theme.spacings.$4,
   borderRadius: scaledPixels(12),
   cursor: 'pointer',

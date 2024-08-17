@@ -19,6 +19,7 @@ interface TaskItemProps {
 
 interface CheckboxProps extends ViewProps {
   checked: boolean;
+  isFocused: boolean;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete, onDeleteTask }) => {
@@ -34,7 +35,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete, onDeleteTas
         >
           <TaskContent>
             <TouchableOpacity onPress={() => onToggleComplete(task.name)}>
-              <Checkbox checked={task.completed} />
+              <Checkbox checked={task.completed} isFocused={isFocused} />
             </TouchableOpacity>
             <TaskInfo>
               <TaskName completed={task.completed}>{task.name}</TaskName>
@@ -78,12 +79,12 @@ const TaskInfo = styled(View)({
   marginLeft: scaledPixels(20),
 });
 
-const Checkbox = styled(View)<CheckboxProps>(({ checked }) => ({
+const Checkbox = styled(View)<CheckboxProps>(({ checked, isFocused }) => ({
   width: scaledPixels(40),
   height: scaledPixels(40),
   borderRadius: scaledPixels(8),
   borderWidth: scaledPixels(3),
-  borderColor: checked ? '#4A90E2' : '#757575',
+  borderColor: checked ? '#4A90E2' : isFocused? '#4A90E2' : '#757575',
   backgroundColor: checked ? '#4A90E2' : 'transparent',
 }));
 

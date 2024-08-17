@@ -17,8 +17,6 @@ import EventPopup from '../components/EventPopup';
 import MessagePopup from '../components/MessagePopup';
 
 import axios from 'axios';
-import { Modal } from '../components/modals/Modal';
-import { SpatialNavigationOverlay } from '../components/modals/SpatialNavigationOverlay/SpatialNavigationOverlay';
 import AIResponseDialog from '../components/AIResponseDialog';
 
 const FamilyHubHome = () => {
@@ -197,7 +195,7 @@ const FamilyHubHome = () => {
         <HeaderBar>
           <DateTimeWidget>
             <Typography style={styles.dateText}>
-              {currentTime.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              {currentTime.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
             </Typography>
             <Typography  style={styles.timeText}>
               {currentTime.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
@@ -472,7 +470,7 @@ const ActionButtonContainer = styled(TouchableOpacity)<{ isFocused: boolean }>((
   justifyContent: 'center',
   padding: scaledPixels(15),
   width: scaledPixels(140),
-  backgroundColor: isFocused ? 'blue' : 'white',
+  backgroundColor: isFocused ? '#4A90E2' : 'white',
 }));
 
 const ActionButtonLabel = styled(Typography)<{ isFocused: boolean }>(({ isFocused }) => ({
@@ -502,7 +500,7 @@ const styles = StyleSheet.create({
     fontSize: scaledPixels(24),
   },
   dateText: {
-    fontSize: scaledPixels(18),
+    fontSize: scaledPixels(24),
     color: '#FFFFFF',
   },
   timeText: {
