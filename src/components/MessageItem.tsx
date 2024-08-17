@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, ViewProps } from 'react-native';
+import React, { useState } from 'react';
+import { View, ViewProps, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 import { Typography } from '../design-system/components/Typography';
 import { scaledPixels } from '../hooks/useScale';
+import { SpatialNavigationFocusableView } from 'react-tv-space-navigation';
 
 interface Message {
   sender: string;
@@ -12,37 +13,62 @@ interface Message {
 
 interface MessageItemProps {
   message: Message;
+  onDeleteMessage: (sender: string) => void;
 }
 
-const MessageItem: React.FC<MessageItemProps> = ({ message }) => {
+const MessageItem: React.FC<MessageItemProps> = ({ message, onDeleteMessage }) => {
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
+
   return (
-    <MessageContainer>
-      <SenderAvatar>
-        <AvatarText>{message.sender[0]}</AvatarText>
-      </SenderAvatar>
-      <MessageContent>
-        <MessageHeader>
-          <SenderName>{message.sender}</SenderName>
-          <MessageTime>{message.time}</MessageTime>
-        </MessageHeader>
-        <MessagePreview>{message.preview}</MessagePreview>
-      </MessageContent>
-    </MessageContainer>
+    <SpatialNavigationFocusableView>
+      {({ isFocused }) => (
+        <MessageContainer
+          style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+          onPointerEnter={() => setShowDeleteButton(true)}
+          onPointerLeave={() => setShowDeleteButton(false)}
+        >
+          <MessageContent>
+            <SenderAvatar>
+              <AvatarText>{message.sender[0]}</AvatarText>
+            </SenderAvatar>
+            <MessageDetails>
+              <MessageHeader>
+                <SenderName>{message.sender}</SenderName>
+                <MessageTime>{message.time}</MessageTime>
+              </MessageHeader>
+              <MessagePreview>{message.preview}</MessagePreview>
+            </MessageDetails>
+          </MessageContent>
+          {showDeleteButton && (
+            <DeleteButton onPress={() => onDeleteMessage(message.sender)}>
+              <DeleteButtonText>&times;</DeleteButtonText>
+            </DeleteButton>
+          )}
+        </MessageContainer>
+      )}
+    </SpatialNavigationFocusableView>
   );
 };
 
 const MessageContainer = styled(View)({
-  flexDirection: 'row',
-  alignItems: 'center',
+  position: 'relative',
   marginBottom: scaledPixels(20),
   backgroundColor: '#FFFFFF',
   borderRadius: scaledPixels(15),
-  padding: scaledPixels(20),
+  overflow: 'hidden',
   elevation: 4,
   shadowColor: '#000',
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.1,
   shadowRadius: scaledPixels(8),
+  borderWidth: scaledPixels(2),
+  borderColor: '#E0E0E0',
+});
+
+const MessageContent = styled(View)({
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: scaledPixels(20),
 });
 
 const SenderAvatar = styled(View)({
@@ -61,7 +87,7 @@ const AvatarText = styled(Typography)({
   fontWeight: 'bold',
 });
 
-const MessageContent = styled(View)({
+const MessageDetails = styled(View)({
   flex: 1,
 });
 
@@ -88,6 +114,22 @@ const MessagePreview = styled(Typography)({
   color: '#757575',
   numberOfLines: 2,
   ellipsizeMode: 'tail',
+});
+
+const DeleteButton = styled(TouchableOpacity)({
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  width: scaledPixels(80),
+  height: '100%',
+  backgroundColor: 'rgba(255, 165, 0, 1)',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+const DeleteButtonText = styled(Typography)({
+  fontSize: scaledPixels(40),
+  color: '#FFFFFF',
 });
 
 export default MessageItem;

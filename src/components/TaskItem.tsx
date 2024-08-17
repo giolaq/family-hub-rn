@@ -3,6 +3,7 @@ import { View, ViewProps, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 import { Typography } from '../design-system/components/Typography';
 import { scaledPixels } from '../hooks/useScale';
+import { SpatialNavigationFocusableView } from 'react-tv-space-navigation';
 
 interface Task {
   name: string;
@@ -24,32 +25,35 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggleComplete, onDeleteTas
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   return (
-    <TaskContainer 
-      onPointerEnter={() => setShowDeleteButton(true)} 
-      onPointerLeave={() => setShowDeleteButton(false)}
-    >
-      <TaskContent>
-        <TouchableOpacity onPress={() => onToggleComplete(task.name)}>
-          <Checkbox checked={task.completed} />
-        </TouchableOpacity>
-        <TaskInfo>
-          <TaskName completed={task.completed}>{task.name}</TaskName>
-          <AssignedTo>{task.assignedTo}</AssignedTo>
-        </TaskInfo>
-      </TaskContent>
-      <DeleteButton 
-        show={showDeleteButton}
-        onPress={() => onDeleteTask(task.name)}
-      >
-        <DeleteButtonText>&times;</DeleteButtonText>
-      </DeleteButton>
-    </TaskContainer>
+    <SpatialNavigationFocusableView>
+      {({ isFocused }) => (
+        <TaskContainer
+          style={isFocused && { borderColor: '#4A90E2', borderWidth: scaledPixels(4) }}
+          onPointerEnter={() => setShowDeleteButton(true)}
+          onPointerLeave={() => setShowDeleteButton(false)}
+        >
+          <TaskContent>
+            <TouchableOpacity onPress={() => onToggleComplete(task.name)}>
+              <Checkbox checked={task.completed} />
+            </TouchableOpacity>
+            <TaskInfo>
+              <TaskName completed={task.completed}>{task.name}</TaskName>
+              <AssignedTo>{task.assignedTo}</AssignedTo>
+            </TaskInfo>
+          </TaskContent>
+          {showDeleteButton && (
+            <DeleteButton onPress={() => onDeleteTask(task.name)}>
+              <DeleteButtonText>&times;</DeleteButtonText>
+            </DeleteButton>
+          )}
+        </TaskContainer>
+      )}
+    </SpatialNavigationFocusableView>
   );
 };
 
 const TaskContainer = styled(View)({
-  flexDirection: 'row',
-  alignItems: 'center',
+  position: 'relative',
   marginBottom: scaledPixels(20),
   backgroundColor: '#FFFFFF',
   borderRadius: scaledPixels(15),
@@ -59,12 +63,11 @@ const TaskContainer = styled(View)({
   shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.1,
   shadowRadius: scaledPixels(8),
-  borderWidth: scaledPixels(3),  // Added thicker border
-  borderColor: '#E0E0E0',  // Light gray border color
+  borderWidth: scaledPixels(2),
+  borderColor: '#E0E0E0',
 });
 
 const TaskContent = styled(View)({
-  flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
   padding: scaledPixels(20),
@@ -97,14 +100,16 @@ const AssignedTo = styled(Typography)({
   fontStyle: 'italic',
 });
 
-const DeleteButton = styled(TouchableOpacity)<{ show: boolean }>(({ show }) => ({
-  width: show ? scaledPixels(80) : 0,
+const DeleteButton = styled(TouchableOpacity)({
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  width: scaledPixels(80),
   height: '100%',
-  backgroundColor: '#FFA500',
+  backgroundColor: 'rgba(255, 165, 0, 1)',
   justifyContent: 'center',
   alignItems: 'center',
-  transition: 'width 0.3s ease-in-out',
-}));
+});
 
 const DeleteButtonText = styled(Typography)({
   fontSize: scaledPixels(40),

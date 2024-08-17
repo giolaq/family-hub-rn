@@ -171,54 +171,74 @@ const FamilyHubHome = () => {
       <ContentWrapper>
           <MainContentArea>
             <SpatialNavigationView direction='horizontal'>
+            <SpatialNavigationView direction='vertical'>
               <WidgetContainer>
                 <CalendarWidget>
                   <WidgetTitle>Family Calendar</WidgetTitle>
+                  <SpatialNavigationView direction='vertical' >
                   <WidgetContent>
                     {calendarEvents.map((event, index) => (
                       <EventItem key={index} event={event} />
                     ))}
                   </WidgetContent>
+                  </SpatialNavigationView>
+                  <SpatialNavigationView direction='horizontal' >
                   <ButtonWrapper>
                     <DefaultFocus>
                       <Button label="New Event" onSelect={handleOpenEventPopup} textStyle={styles.buttonText} />
-                      <Button label="View All" onSelect={() => {}} textStyle={styles.buttonText} />
                     </DefaultFocus>
-                  </ButtonWrapper>
-                </CalendarWidget>
-              </WidgetContainer>
 
+                      <Button label="View All" onSelect={() => {}} textStyle={styles.buttonText} />
+                  </ButtonWrapper>
+                  </SpatialNavigationView>
+                </CalendarWidget>
+
+              </WidgetContainer>
+            </SpatialNavigationView>
+
+            <SpatialNavigationView direction='vertical'>
               <WidgetContainer>
                 <TaskBoardWidget>
                   <WidgetTitle>Today's Tasks</WidgetTitle>
                   <WidgetContent>
+                  <SpatialNavigationView direction='vertical' >
                     {tasks.map((task, index) => (
                       <TaskItem key={index} task={task} onToggleComplete={toggleTaskComplete} onDeleteTask={deleteTask} />
                     ))}
+                  </SpatialNavigationView>
                   </WidgetContent>
                   <ProgressBarWrapper>
                     <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
                   </ProgressBarWrapper>
+                  <SpatialNavigationView direction='horizontal' >
                   <ButtonWrapper>
                     <Button label="New Task" onSelect={handleOpenPopup} textStyle={styles.buttonText} />
                     <Button label={allCompleted ? "Undo" : "Mark All Complete"} onSelect={handleMarkAllTasksComplete} textStyle={styles.buttonText} />
                   </ButtonWrapper>
+                  </SpatialNavigationView>
                 </TaskBoardWidget>
               </WidgetContainer>
+              </SpatialNavigationView>
 
+              <SpatialNavigationView direction='vertical'>
               <WidgetContainer>
                 <MessageCenterWidget>
                   <WidgetTitle>Recent Messages</WidgetTitle>
                   <WidgetContent>
+                  <SpatialNavigationView direction='vertical' >
                     {messages.map((message, index) => (
                       <MessageItem key={index} message={message} />
                     ))}
+                  </SpatialNavigationView>
                   </WidgetContent>
+                  <SpatialNavigationView direction='horizontal' >
                   <ButtonWrapper>
                     <Button label="New Message" onSelect={handleOpenMessagePopup} textStyle={styles.buttonText} />
                   </ButtonWrapper>
+                  </SpatialNavigationView>
                 </MessageCenterWidget>
               </WidgetContainer>
+            </SpatialNavigationView>
             </SpatialNavigationView>
           </MainContentArea>
         </ContentWrapper>
