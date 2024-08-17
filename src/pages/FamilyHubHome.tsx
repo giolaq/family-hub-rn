@@ -160,7 +160,7 @@ const FamilyHubHome = () => {
     <Page>
     <Container>
       <HeaderBar>
-        <Logo source={require('../../assets/icon.png')} />
+        <Logo source={require('../../assets/familyHub-logo-t.png')} />
         <Typography variant="title" style={styles.headerText}>{currentTime.toLocaleTimeString()}</Typography>
         <WeatherWidget>
           <Typography variant="body" style={styles.weatherText}>{weather.temp}</Typography>
