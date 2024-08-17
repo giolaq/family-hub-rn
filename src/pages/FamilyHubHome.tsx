@@ -41,6 +41,9 @@ const FamilyHubHome = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isMessagePopupOpen, setIsMessagePopupOpen] = useState(false);
 
+  const [allCompleted, setAllCompleted] = useState(false);
+  const [prevTasks, setPrevTasks] = useState<Task[]>([]);
+
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
     console.log("Popup should be showing");
@@ -88,6 +91,7 @@ const FamilyHubHome = () => {
         task.name === taskName ? { ...task, completed: !task.completed } : task
       )
     );
+    setAllCompleted(false);
   };
 
   const deleteTask = (taskName: string) => {
@@ -121,11 +125,19 @@ const FamilyHubHome = () => {
   };
 
   const handleMarkAllTasksComplete = () => {
-    const updatedTasks = tasks.map((task) => ({
-      ...task,
-      completed: true,
-    }));
-    setTasks(updatedTasks);
+    if (!allCompleted) {
+      setPrevTasks(tasks);
+      const updatedTasks = tasks.map((task) => ({
+        ...task,
+        completed: true,
+      }));
+      setTasks(updatedTasks);
+      setAllCompleted(true);
+    } else {
+      setTasks(prevTasks);
+      setAllCompleted(false);
+    }
+    
   };
 
   const sortEvents = () => {
@@ -187,7 +199,7 @@ const FamilyHubHome = () => {
                     <ProgressBar progress={tasks.filter(task => task.completed).length / tasks.length} />
                   </ProgressBarWrapper>
                   <ButtonWrapper>
-                    <Button label="Mark All Complete" onSelect={handleMarkAllTasksComplete} textStyle={styles.buttonText} />
+                    <Button label={allCompleted ? "Undo" : "Mark All Complete"} onSelect={handleMarkAllTasksComplete} textStyle={styles.buttonText} />
                   </ButtonWrapper>
                 </TaskBoardWidget>
               </WidgetContainer>
