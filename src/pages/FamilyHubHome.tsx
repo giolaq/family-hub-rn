@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import styled from '@emotion/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DefaultFocus, SpatialNavigationFocusableView, SpatialNavigationView } from 'react-tv-space-navigation';
@@ -15,6 +15,11 @@ import Popup from '../components/Popup';
 import { scaledPixels } from '../hooks/useScale';
 import EventPopup from '../components/EventPopup';
 import MessagePopup from '../components/MessagePopup';
+
+import axios from 'axios';
+import { Modal } from '../components/modals/Modal';
+import { SpatialNavigationOverlay } from '../components/modals/SpatialNavigationOverlay/SpatialNavigationOverlay';
+import AIResponseDialog from '../components/AIResponseDialog';
 
 const FamilyHubHome = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -149,14 +154,40 @@ const FamilyHubHome = () => {
     );
   };
 
-  const handleAIAssistant = () => {
-    // Implement AI Assistant functionality
-    console.log("AI Assistant clicked");
-  };
-
   const handleSettings = () => {
     // Implement Settings functionality
     console.log("Settings clicked");
+  };
+
+  const [isAIDialogOpen, setIsAIDialogOpen] = useState(false);
+  const [aiResponse, setAIResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const callOpenAI = async (prompt: string) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post('https://api.openai.com/v1/chat/completions',
+      {
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 150
+      }, {
+        headers: {
+          'Authorization': `Bearer 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`,
+          'Content-Type': 'application/json'
+        }
+      });
+      setAIResponse(response.data.choices[0].message.content.trim());
+    } catch (error) {
+      console.error('Error calling OpenAI API:', error);
+      setAIResponse('Sorry, I encountered an error. Please try again later.');
+    }
+    setIsLoading(false);
+  };
+
+  const handleAIAssistant = () => {
+    setIsAIDialogOpen(true);
+    callOpenAI("As an AI assistant for the family hub, provide a random helpful tip ");
   };
 
   return (
@@ -278,6 +309,12 @@ const FamilyHubHome = () => {
         </SpatialNavigationView>
         </QuickActionsBar>
     </SpatialNavigationView>
+    <AIResponseDialog
+      isOpen={isAIDialogOpen}
+      onClose={() => setIsAIDialogOpen(false)}
+      response={aiResponse}
+      isLoading={isLoading}
+    />
     </Container>
 
     <Popup isOpen={isPopupOpen} onClose={handleClosePopup} onSubmit={handleSubmit} />

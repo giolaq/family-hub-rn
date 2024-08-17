@@ -23,6 +23,7 @@
     "@react-navigation/native-stack": "^6.9.17",
     "@types/jest": "^29.5.12",
     "@types/react-test-renderer": "^18.0.7",
+    "axios": "^1.7.4",
     "babel-jest": "^29.7.0",
     "date-fns": "^3.6.0",
     "expo": "~50.0.3",
