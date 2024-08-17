@@ -202,7 +202,7 @@ const StyledPicker = styled(Picker)({
   color: '#333333',
   backgroundColor: '#FFFFFF',
   width: '100%',
-  height: scaledPixels(60),
+  height: scaledPixels(80),
 });
 
 
