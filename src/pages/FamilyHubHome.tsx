@@ -189,7 +189,9 @@ const FamilyHubHome = () => {
   
     // Add events
     prompt += "\nHere are our upcoming events:\n";
-    events.forEach(event => prompt += "- ${event.title} on ${event.date} at ${event.time} (${event.member === 'All' ? 'Everyone's invited!' : `${event.member}'s event`})\n" );
+    events.forEach(event => { 
+      prompt += `- ${event.title} on ${event.date} at ${event.time} ${event.member} event\n`;
+      });
   
     // Add recent messages
     prompt += "\nAnd here's what we've been chatting about:\n";
@@ -281,7 +283,7 @@ const FamilyHubHome = () => {
 
     setIsAIDialogOpen(true);
     const aiPrompt = generateAIPrompt(tasks, calendarEvents, messages);
-
+    console.log(aiPrompt);
     callOpenAI(aiPrompt);
   };
 
@@ -387,7 +389,7 @@ const FamilyHubHome = () => {
         <SpatialNavigationView direction='horizontal'>
           <QuickActionsContent>
               <CenteredContent>
-                  <SpatialNavigationFocusableView>
+                  <SpatialNavigationFocusableView onSelect={handleAIAssistant}>
                   {({ isFocused }) => (
                     <ActionButton icon="Bot" label="AI Assistant" onClick={handleAIAssistant} isFocused={isFocused} />
                   )}
