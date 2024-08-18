@@ -193,9 +193,48 @@ const FamilyHubHome = () => {
     setIsLoading(false);
   };
 
+  const generateAIPrompt = (tasks: Task[], events: Event[], messages: Message[]): string => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  
+    let prompt = `Hi there! You're the friendly AI assistant for our family. Today is ${formattedDate}, and I'd love your help in organizing our day and providing some cheerful advice. Here's what's going on with us:\n\n`;
+  
+    // Add pending tasks
+    const pendingTasks = tasks.filter(task => !task.completed);
+    if (pendingTasks.length > 0) {
+      prompt += "We've got some tasks to tackle:\n";
+      pendingTasks.forEach(task => {
+        prompt += `- ${task.name} (${task.assignedTo} is on it!)\n`;
+      });
+    } else {
+      prompt += "Great news! We don't have any pending tasks at the moment.\n";
+    }
+  
+    // Add events
+    prompt += "\nHere are our upcoming events:\n";
+    events.forEach(event => prompt += "- ${event.title} on ${event.date} at ${event.time} (${event.member === 'All' ? 'Everyone's invited!' : `${event.member}'s event`})\n" );
+  
+    // Add recent messages
+    prompt += "\nAnd here's what we've been chatting about:\n";
+    messages.slice(-3).forEach(message => {
+      prompt += `- ${message.sender} said: "${message.preview}" (${message.time})\n`;
+    });
+  
+    prompt += `\nBased on all this, could you help us out with the following?
+  1. Suggest a fun daily schedule that includes our tasks and events.
+  2. Give us 3 cheerful tips to make today great for everyone.
+  3. Recommend 2 exciting family activities we could plan for the future.
+  
+  Feel free to be creative and inject some humor – we love a good laugh! And remember, we're all about keeping things positive and family-friendly. Thanks a bunch! Start the text with an "Hello"`;
+  
+    return prompt;
+  }
+  
+
   const handleAIAssistant = () => {
     setIsAIDialogOpen(true);
-    callOpenAI("As an AI assistant for the family hub, provide a random helpful tip ");
+    const aiPrompt = generateAIPrompt(tasks, calendarEvents, messages);
+    callOpenAI(aiPrompt);
   };
 
   return (
