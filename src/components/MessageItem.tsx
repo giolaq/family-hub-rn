@@ -6,6 +6,7 @@ import { scaledPixels } from '../hooks/useScale';
 import { SpatialNavigationFocusableView } from 'react-tv-space-navigation';
 
 interface Message {
+  id: string;
   sender: string;
   preview: string;
   time: string;
@@ -13,7 +14,7 @@ interface Message {
 
 interface MessageItemProps {
   message: Message;
-  onDeleteMessage: (sender: string) => void;
+  onDeleteMessage: (id: string) => void;
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message, onDeleteMessage }) => {
@@ -40,7 +41,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, onDeleteMessage }) =
             </MessageDetails>
           </MessageContent>
           {showDeleteButton && (
-            <DeleteButton onPress={() => onDeleteMessage(message.sender)}>
+            <DeleteButton onPress={() => onDeleteMessage(message.id)}>
               <DeleteButtonText>&times;</DeleteButtonText>
             </DeleteButton>
           )}

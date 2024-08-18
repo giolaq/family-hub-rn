@@ -34,10 +34,10 @@ const FamilyHubHome = () => {
     { id: '2', title: "Family Movie Night", date: "2024-08-10", time: "19:00", member: "All" },
     { id: '3', title: "Dentist Appointment", date: "2024-08-11", time: "10:00", member: "John" },
   ]);
-  const [messages, setMessages] = useState<any[]>([
-    { sender: "Mom", preview: "Don't forget to pick up milk on your way home!", time: "10:30 AM" },
-    { sender: "Dad", preview: "I'll be late for dinner tonight. Start without me.", time: "2:15 PM" },
-    { sender: "Sarah", preview: "Can someone give me a ride to soccer practice?", time: "4:45 PM" },
+  const [messages, setMessages] = useState<Message[]>([
+    { id: '1', sender: "Mom", preview: "Don't forget to pick up milk on your way home!", time: "10:30 AM" },
+    { id: '2', sender: "Dad", preview: "I'll be late for dinner tonight. Start without me.", time: "2:15 PM" },
+    { id: '3', sender: "Sarah", preview: "Can someone give me a ride to soccer practice?", time: "4:45 PM" },
   ])
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -75,6 +75,7 @@ const FamilyHubHome = () => {
 
   const handleSubmitMessage = (data: { sender: string; message: string, time: string }) => {
     const newMessage = {
+      id: Date.now().toString(), // Simple way to generate a unique ID
       sender: data.sender,
       preview: data.message,
       time: data.time,
@@ -98,6 +99,15 @@ const FamilyHubHome = () => {
 
   const deleteTask = (taskName: string) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.name !== taskName));
+  }
+
+  const deleteEvent = (eventId: string) => {
+    setCalendarEvents((prevEvent) => prevEvent.filter((event) => event.id !== eventId));
+  }
+
+  const deleteMessage = (messageId: string) => {
+    console.log(messageId);
+    setMessages((prevMessage) => prevMessage.filter((message) => message.id !== messageId));
   }
 
   const [isEventPopupOpen, setIsEventPopupOpen] = useState(false);
@@ -220,7 +230,7 @@ const FamilyHubHome = () => {
                   <WidgetContent>
                   <SpatialNavigationView direction='vertical' >
                     {calendarEvents.map((event, index) => (
-                      <EventItem key={index} event={event} />
+                      <EventItem key={index} event={event} onDeleteEvent={deleteEvent}/>
                     ))}
                    </SpatialNavigationView>
                   </WidgetContent>
@@ -268,8 +278,8 @@ const FamilyHubHome = () => {
                   <WidgetTitle>Recent Messages</WidgetTitle>
                   <WidgetContent>
                   <SpatialNavigationView direction='vertical' >
-                    {messages.map((message, index) => (
-                      <MessageItem key={index} message={message} />
+                    {messages.map((message: Message, index) => (
+                      <MessageItem key={index} message={message} onDeleteMessage={deleteMessage} />
                     ))}
                   </SpatialNavigationView>
                   </WidgetContent>
