@@ -20,7 +20,7 @@ const AIResponseDialog: React.FC<AIResponseDialogProps> = ({ isOpen, onClose, re
   return (
     <PopupOverlay>
       <PopupContent>
-        <PopupTitle>AI Assistant Response</PopupTitle>
+        <PopupTitle>FamilyHub suggests</PopupTitle>
         <SpatialNavigationOverlay isModalVisible={isOpen} hideModal={onClose}>
           <SpatialNavigationView direction='vertical'>
             <ResponseContent>
