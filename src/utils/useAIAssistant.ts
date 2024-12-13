@@ -55,6 +55,7 @@ const useAIAssistant = () => {
         },
         {
           headers: {
+            //It's a deactivated api key you hacker! :D 
             'Authorization': `Bearer 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`,
             'Content-Type': 'application/json'
           }
